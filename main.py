@@ -21,5 +21,8 @@ class MainHandler(webapp2.RequestHandler):
         self.response.write('Hello world!')
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler)
+    ('/', MainHandler),
+    ('login', LoginHandler),
+    ('artist', ArtistHandler),
+    ('profile',ProfileHandler)
 ], debug=True)
