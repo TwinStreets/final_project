@@ -93,10 +93,14 @@ class ArtistHandler(webapp2.RequestHandler):
 class ProfileHandler(webapp2.RequestHandler):
     def get(self):
 
-
+        user = User.query().fetch()
+        plus_one = Plus_One.query().fetch()
+        minus_one = Minus_One.query().fetch()
 
         template_vars = {
-
+            'user': user,
+            'plus_one': plus_one,
+            'minus_one', minus_one
         }
 
         template = jinja_environment.get_template('templates/profile.html')
