@@ -2,3 +2,8 @@ footer {
   background-color: lightblue;
   position: absolute;
 }
+
+body{
+  background: red;
+  color: red;
+}
