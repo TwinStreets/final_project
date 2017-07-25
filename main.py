@@ -11,12 +11,16 @@ jinja_environment = jinja2.Environment(
 class User(ndb.Model):
     name = ndb.StringProperty()
     blurb = ndb.StringProperty()
-    list_of_artists = ndb.StringProperty()
+    #list_of_artists
 
 class Artist(ndb.Model):
     name = ndb.StringProperty()
     bio = ndb.StringProperty()
     images = ndb.StringProperty()
+
+class PlusOne(ndb.Model):
+    user_key = ndb.KeyProperty(kind=Post)
+    artist_key = ndb.KeyProperty(kind=Post)
 
 class LoginHandler(webapp2.RequestHandler):
     def get(self):
