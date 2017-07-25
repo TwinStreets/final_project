@@ -22,13 +22,13 @@ class Artist(ndb.Model):
 # This is the mddle man between the user and the artist it allows them to talk to
 #  each other without being stuck to one in particular
 class Plus_One(ndb.Model):
-    user_key = ndb.KeyProperty(kind=Post)
-    artist_key = ndb.KeyProperty(kind=Post)
+    user_key = ndb.KeyProperty(kind=User)
+    artist_key = ndb.KeyProperty(kind=Artist)
     like = ndb.BooleanProperty()
 
 class Minus_One(ndb.Model):
-    user_key = ndb.KeyProperty(kind=Post)
-    artist_key = ndb.KeyProperty(kind=Post)
+    user_key = ndb.KeyProperty(kind=User)
+    artist_key = ndb.KeyProperty(kind=Artist)
     dislike = ndb.BooleanProperty()
 
 # The login landing page
@@ -45,8 +45,8 @@ class MainHandler(webapp2.RequestHandler):
 
         #creating login and logout
         current_user = users.get_current_user()
-        login_url = users.create_login_url()
-        logout_url = users.create_logout_url()
+        login_url = users.create_login_url('/')
+        logout_url = users.create_logout_url('/')
 
         template_vars = {
         "current_user": current_user,
