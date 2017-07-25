@@ -44,6 +44,7 @@ class MainHandler(webapp2.RequestHandler):
     def get(self):
 
         #creating login and logout
+        # Should we fetch () the artist info from the query
         current_user = users.get_current_user()
         login_url = users.create_login_url('/')
         logout_url = users.create_logout_url('/')
@@ -93,7 +94,7 @@ class ArtistHandler(webapp2.RequestHandler):
 class ProfileHandler(webapp2.RequestHandler):
     def get(self):
 
-
+        
 
         template_vars = {
 
