@@ -197,4 +197,6 @@ app = webapp2.WSGIApplication([
     ('/artist', ArtistHandler),
     ('/profile', ProfileHandler),
     ('/photo', PhotoHandler),
+    ('/unlike', UnlikeHandler),
+    ('/like', LikeHandler)
 ], debug=True)
