@@ -94,7 +94,7 @@ class ArtistHandler(webapp2.RequestHandler):
 class ProfileHandler(webapp2.RequestHandler):
     def get(self):
 
-        
+
 
         template_vars = {
 
@@ -138,10 +138,60 @@ class PhotoHandler(webapp2.RequestHandler):
         template = jinja_environment.get_template('templates/artist_page.html')
         self.response.write(template.render(template_vars))
 
+class LikeHandler(webapp2.RequestHandler):
+    # Handles increasing the likes when you click the button.
+    def post(self):
+
+        # === 1: Get info from the request. ===
+        urlsafe_key = self.request.get('photo_key')
+
+        # === 2: Interact with the database. ===
+
+        # Use the URLsafe key to get the photo from the DB.
+        photo_key = ndb.Key(urlsafe=urlsafe_key)
+        photo = photo_key.get()
+
+        # Fix the photo like count just in case it is None.
+        if photo.like_status == False:
+            photo.like_status = None
+
+        # Increase the photo count and update the database.
+        photo.like_status = True
+        photo.put()
+
+        # === 3: Send a response. ===
+        # Send the updated count back to the client.
+        self.response.write(photo.like_status)
+
+class UnlikeHandler(webapp2.RequestHandler):
+    # Handles increasing the likes when you click the button.
+    def post(self):
+
+        # === 1: Get info from the request. ===
+        urlsafe_key = self.request.get('photo_key')
+
+        # === 2: Interact with the database. ===
+
+        # Use the URLsafe key to get the photo from the DB.
+        photo_key = ndb.Key(urlsafe=urlsafe_key)
+        photo = photo_key.get()
+
+        # Fix the photo like count just in case it is None.
+        if photo.like_status == True:
+            photo.like_status = None
+
+        # Increase the photo count and update the database.
+        photo.like_status = False
+        photo.put()
+
+        # === 3: Send a response. ===
+        # Send the updated count back to the client.
+        self.response.write(photo.like_status)
+
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/login', LoginHandler),
     ('/artist', ArtistHandler),
     ('/profile', ProfileHandler),
-    ('/photo', PhotoHandler)
+    ('/photo', PhotoHandler),
 ], debug=True)
