@@ -34,7 +34,6 @@ class Minus_One(ndb.Model):
 # The login landing page
 class LoginHandler(webapp2.RequestHandler):
     def get(self):
-        self.response.write('Hello world!')
         template = jinja_environment.get_template('templates/log_in_page.html')
         self.response.write(template.render())
 
@@ -189,8 +188,8 @@ class UnlikeHandler(webapp2.RequestHandler):
         self.response.write(photo.like_status)
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler),
-    ('/login', LoginHandler),
+    ('/login', MainHandler),
+    ('/', LoginHandler),
     ('/artist', ArtistHandler),
     ('/profile', ProfileHandler),
     ('/photo', PhotoHandler),
