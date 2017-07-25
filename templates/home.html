@@ -3,23 +3,13 @@
   <head>
     <title> Kinding Home</title>
   </head>
-  <button><a href="/">Log Out</a></button>
+  <input type="button" onclick="location.href='/home';" value="Log Out" />
   <h1> Homepage </h1>
   <link href="stylesheets/style.css" rel="stylesheet">
   <body>
     <h3>Check out these artists!</h3><br>
     <a href="/artist"> Artist </a> <br><br>
 
-  <button>  <a href="/profile">Profile </a></button>
+  <input type="button" onclick="location.href='/profile';" value="Profile" />
   </body>
-
-  <a href="#" onclick="signOut();">Sign out</a>
-<script>
-  function signOut() {
-    var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function () {
-      console.log('User signed out.');
-    });
-  }
-</script>
 </html>
