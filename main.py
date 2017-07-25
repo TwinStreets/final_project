@@ -60,8 +60,34 @@ class MainHandler(webapp2.RequestHandler):
 class ArtistHandler(webapp2.RequestHandler):
     def get(self):
 
+        
+
+        template_vars = {
+
+        }
+
         template = jinja_environment.get_template('templates/artist_page.html')
         self.response.write(template.render())
+
+    def post(self):
+
+        #like
+        # Get inforation
+        urlsafe_key1 = self.request.get('user_key')
+        urlsafe_key2 = self.request.get('artist_key')
+        like = self.request.get('like')
+        dislike = self.request.get('dislike')
+        # Create an Instance/ interact withb database
+        artist_key = ndb.Key(urlsafe=urlsafe_key2)
+        user_key = ndb.Key(urlsafe=urlsafe_key1)
+        plus_one = Plus_One(user_key=user_key,artist_key=artist_key,like=True)
+        minus_one = Minus_One(user_key=user_key,artist_key=artist_key,like=False)
+        # Save to database/ create a response
+        plus_one.put()
+        minus_one.put()
+        # Redirect?
+
+        #dislike
 
 # This is the profile page, which is supposed to show you all the stuff in the data base about you
 class ProfileHandler(webapp2.RequestHandler):
