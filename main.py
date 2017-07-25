@@ -34,7 +34,6 @@ class Minus_One(ndb.Model):
 # The login landing page
 class LoginHandler(webapp2.RequestHandler):
     def get(self):
-        self.response.write('Hello world!')
         template = jinja_environment.get_template('templates/log_in_page.html')
         self.response.write(template.render())
 
@@ -46,8 +45,8 @@ class MainHandler(webapp2.RequestHandler):
         #creating login and logout
         # Should we fetch () the artist info from the query
         current_user = users.get_current_user()
-        login_url = users.create_login_url('/')
-        logout_url = users.create_logout_url('/')
+        login_url = users.create_login_url('/home')
+        logout_url = users.create_logout_url('/home')
 
         template_vars = {
         "current_user": current_user,
@@ -189,8 +188,8 @@ class UnlikeHandler(webapp2.RequestHandler):
         self.response.write(photo.like_status)
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler),
-    ('/login', LoginHandler),
+    ('/home', MainHandler),
+    ('/', LoginHandler),
     ('/artist', ArtistHandler),
     ('/profile', ProfileHandler),
     ('/photo', PhotoHandler),
