@@ -94,7 +94,7 @@ class ArtistHandler(webapp2.RequestHandler):
 class ProfileHandler(webapp2.RequestHandler):
     def get(self):
 
-        
+
 
         template_vars = {
 
@@ -103,10 +103,95 @@ class ProfileHandler(webapp2.RequestHandler):
         template = jinja_environment.get_template('templates/profile.html')
         self.response.write(template.render(template_vars))
 
+class Photo(ndb.Model):
+    title = ndb.StringProperty()
+    photo_url = ndb.StringProperty()
+    like_status = ndb.BooleanProperty(default=None)
+    created = ndb.DateTimeProperty(auto_now_add=True)
+
+def add_default_photos():
+    # Photo URLs from Wikipedia.
+    plus_url = 'https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0ahUKEwiZp4nhj6XVAhUkrlQKHfNYDPgQjRwIBw&url=https%3A%2F%2Fcommons.wikimedia.org%2Fwiki%2FFile%3AHeart_coraz%25C3%25B3n.svg&psig=AFQjCNHYtKb4FdQzF1E-Vm0F8C0oGXXuAA&ust=1501095799756791'
+    minus_url = 'https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&ved=0ahUKEwiblsTWj6XVAhWCqFQKHUgYCL4QjRwIBw&url=https%3A%2F%2Fcommons.wikimedia.org%2Fwiki%2FFile%3ABroken_heart.svg&psig=AFQjCNFjlfeSot6MUm8J3vODtrBIvUu8DA&ust=1501095756797578'
+
+    plus = Photo(title='Plus', photo_url=plus_url, like_status=None)
+    minus = Photo(title='Minus', photo_url=minus_url, like_status=None)
+
+    plus.put()
+    minus.put()
+
+    return [plus, minus]
+
+class PhotoHandler(webapp2.RequestHandler):
+    def get(self):
+        photos = Photo.query().order(-Photo.created).fetch()
+
+        # If there are no photos in the database, add defaults.
+        # This will only happen one time (on the first run).
+        if not photos:
+            photos = add_default_photos()
+
+        template_vars = {
+            'photos': photos,
+        }
+
+        template = jinja_environment.get_template('templates/artist_page.html')
+        self.response.write(template.render(template_vars))
+
+class LikeHandler(webapp2.RequestHandler):
+    # Handles increasing the likes when you click the button.
+    def post(self):
+
+        # === 1: Get info from the request. ===
+        urlsafe_key = self.request.get('photo_key')
+
+        # === 2: Interact with the database. ===
+
+        # Use the URLsafe key to get the photo from the DB.
+        photo_key = ndb.Key(urlsafe=urlsafe_key)
+        photo = photo_key.get()
+
+        # Fix the photo like count just in case it is None.
+        if photo.like_status == False:
+            photo.like_status = None
+
+        # Increase the photo count and update the database.
+        photo.like_status = True
+        photo.put()
+
+        # === 3: Send a response. ===
+        # Send the updated count back to the client.
+        self.response.write(photo.like_status)
+
+class UnlikeHandler(webapp2.RequestHandler):
+    # Handles increasing the likes when you click the button.
+    def post(self):
+
+        # === 1: Get info from the request. ===
+        urlsafe_key = self.request.get('photo_key')
+
+        # === 2: Interact with the database. ===
+
+        # Use the URLsafe key to get the photo from the DB.
+        photo_key = ndb.Key(urlsafe=urlsafe_key)
+        photo = photo_key.get()
+
+        # Fix the photo like count just in case it is None.
+        if photo.like_status == True:
+            photo.like_status = None
+
+        # Increase the photo count and update the database.
+        photo.like_status = False
+        photo.put()
+
+        # === 3: Send a response. ===
+        # Send the updated count back to the client.
+        self.response.write(photo.like_status)
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/login', LoginHandler),
     ('/artist', ArtistHandler),
-    ('/profile',ProfileHandler)
+    ('/profile', ProfileHandler),
+    ('/photo', PhotoHandler),
 ], debug=True)
