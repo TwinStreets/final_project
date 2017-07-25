@@ -11,7 +11,8 @@ jinja_environment = jinja2.Environment(
 class User(ndb.Model):
     name = ndb.StringProperty()
     blurb = ndb.StringProperty()
-    list_of_artists = ndb.StringProperty()
+    liked_artists = ndb.StringProperty()
+    disliked_artists = ndb.StringProperty()
 
 class Artist(ndb.Model):
     name = ndb.StringProperty()
