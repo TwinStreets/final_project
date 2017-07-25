@@ -27,8 +27,8 @@ class Plus_One(ndb.Model):
     like = ndb.BooleanProperty()
 
 class Minus_One(ndb.Model):
-    user_key = ndb.KeyProperty(kind=post)
-    artist_key = ndb.KeyProperty(kind=post)
+    user_key = ndb.KeyProperty(kind=Post)
+    artist_key = ndb.KeyProperty(kind=Post)
     dislike = ndb.BooleanProperty()
 
 # The login landing page
@@ -60,14 +60,14 @@ class MainHandler(webapp2.RequestHandler):
 class ArtistHandler(webapp2.RequestHandler):
     def get(self):
 
-        
-
+        artist_query = Artist.query()
+        artist = artist_query
         template_vars = {
-
+            'artist': artist
         }
 
         template = jinja_environment.get_template('templates/artist_page.html')
-        self.response.write(template.render())
+        self.response.write(template.render(template_vars))
 
     def post(self):
 
@@ -95,9 +95,12 @@ class ProfileHandler(webapp2.RequestHandler):
 
 
 
+        template_vars = {
+
+        }
 
         template = jinja_environment.get_template('templates/profile.html')
-        self.response.write(template.render())
+        self.response.write(template.render(template_vars))
 
 
 app = webapp2.WSGIApplication([
