@@ -6,10 +6,36 @@
   <input type="button" onclick="location.href='/';" value="Log Out" />
   <h1> Homepage </h1>
   <link href="stylesheets/style.css" rel="stylesheet">
-  <body>
-    <h3>Check out these artists!</h3><br>
-    <a href="/artist"> Artist </a> <br><br>
 
-  <input type="button" onclick="location.href='/profile';" value="Profile" />
-  </body>
+
+  {% if current_user %}
+
+    Welcome, {{current_user}}!<br><br>
+
+<p>
+<div class="boxed">
+          <br><br>
+</div>
+
+<body>
+  <h3>Check out these artists!</h3><br>
+  <a href="/artist"> Artist </a> <br><br>
+
+<input type="button" onclick="location.href='/profile';" value="Profile" />
+</body>
+
+
+<p>
+  <a href="{{logout_url}}"> Log Out__ </a><br>
+
+
+  {% else %}
+
+  <a href="{{login_url}}"> Log In </a><br>
+
+  {% endif %}
+</p>
+
+
+
 </html>
