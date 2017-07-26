@@ -4,5 +4,26 @@ footer {
 }
 
 body{
-  background: red;
+  background: tan;
+  padding: 15px;
+}
+
+header{
+  background: brown;
+  padding: 15px;
+  font-weight: bold;
+  border-bottom: 1px solid blue;
+  border-top: 1px solid blue;
+}
+
+div{
+  text-align: center;
+}
+
+body header a{
+  text-align: right;
+}
+
+#getout {
+  text-align: right;
 }
