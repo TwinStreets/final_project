@@ -11,8 +11,10 @@
     </div>
   </header>
   <body>
-    <h3>Name: {{current_user}}</h3>
+    <!-- <h3>Name: {{current_user}}</h3> -->
     <form action="/profile" method="post">
+      <h4>Name: </h4>
+      <input value="{{current_user}}" type="text" name="name" >
       <h3>Bio: </h3>
       <textarea  placeholder="Write about yourself! " name="blurb" rows="8" cols="80"></textarea><br>
       <input type="submit" >

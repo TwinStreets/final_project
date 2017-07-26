@@ -128,7 +128,11 @@ class ProfileHandler(webapp2.RequestHandler):
         self.response.write(template.render(template_vars))
 
     def post(self):
+        name = self.request.get('name')
         blurb = self.request.get('blurb')
+        user = User(name=name,blurb=blurb)
+        user.put()
+        self.redirect('/profile')
 
 class Photo(ndb.Model):
     title = ndb.StringProperty()
