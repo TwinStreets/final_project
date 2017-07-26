@@ -108,6 +108,7 @@ class ProfileHandler(webapp2.RequestHandler):
         plus_one = Plus_One.query().fetch()
         minus_one = Minus_One.query().fetch()
         current_user = users.get_current_user()
+    #    blurb =
 
         template_vars = {
             'user': user,
@@ -118,6 +119,9 @@ class ProfileHandler(webapp2.RequestHandler):
 
         template = jinja_environment.get_template('templates/profile.html')
         self.response.write(template.render(template_vars))
+
+    def post(self):
+        blurb = self.request.get('blurb')
 
 class Photo(ndb.Model):
     title = ndb.StringProperty()
