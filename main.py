@@ -31,11 +31,6 @@ class Minus_One(ndb.Model):
     artist_key = ndb.KeyProperty(kind=Artist)
     dislike = ndb.BooleanProperty()
 
-# The login landing page
-class LoginHandler(webapp2.RequestHandler):
-    def get(self):
-        template = jinja_environment.get_template('templates/log_in_page.html')
-        self.response.write(template.render())
 
 # We can start this with being a simple about page then change it to be a dinamic
 # page that shows artists rankings in wacky categories
@@ -45,8 +40,8 @@ class MainHandler(webapp2.RequestHandler):
         #creating login and logout
         # Should we fetch () the artist info from the query
         current_user = users.get_current_user()
-        login_url = users.create_login_url('/home')
-        logout_url = users.create_logout_url('/home')
+        login_url = users.create_login_url('/')
+        logout_url = users.create_logout_url('/')
 
         template_vars = {
         "current_user": current_user,
@@ -55,6 +50,10 @@ class MainHandler(webapp2.RequestHandler):
         }
         template = jinja_environment.get_template('templates/home.html')
         self.response.write(template.render(template_vars))
+    def post(self):
+        email = users.get_current_user().email()
+
+        self.redirect('/')
 
 # This is the main page where everything happens, the bulk of functionality
 class ArtistHandler(webapp2.RequestHandler):
@@ -192,8 +191,7 @@ class UnlikeHandler(webapp2.RequestHandler):
         self.response.write(photo.like_status)
 
 app = webapp2.WSGIApplication([
-    ('/home', MainHandler),
-    ('/', LoginHandler),
+    ('/', MainHandler),
     ('/artist', ArtistHandler),
     ('/profile', ProfileHandler),
     ('/photo', PhotoHandler),
