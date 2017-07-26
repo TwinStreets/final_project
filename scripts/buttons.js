@@ -1,4 +1,4 @@
-function clickLike() {
+function clickPlus() {
   // Here, "this" is the button that the user clicked.
   var button = $(this);
 
@@ -21,7 +21,7 @@ function clickLike() {
   });
 }
 
-function clickPlus() {
+function clickMinus() {
   // Here, "this" is the button that the user clicked.
   var button = $(this);
 

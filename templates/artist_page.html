@@ -9,6 +9,24 @@
     Insert image here
   </body>
   <footer>
+
+    <div id="photo-container">
+
+    {% for photo in photos %}
+
+      <div class="photo">
+        <h2>{{ photo.title }}</h2>
+        <img src="{{ photo.photo_url }}" alt="Photo of {{ photo.title }}">
+        <div class="like_status-container">
+          <button value="{{ photo.key.urlsafe() }}">Like</button>
+          <span class="likes">{{ photo.like_status }}</span> likes
+        </div>
+      </div>
+
+    {% endfor %}
+
+    </div>
+
     <button class=Plus_One>+1</button>
     <button class=Minus_One>-1</button>
   </footer>
