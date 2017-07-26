@@ -18,6 +18,8 @@ class Artist(ndb.Model):
     name = ndb.StringProperty()
     genre = ndb.StringProperty()
     image = ndb.StringProperty()
+    #artist_key = ndb.KeyProperty(kind=Artist)
+
 
 # This is the mddle man between the user and the artist it allows them to talk to
 #  each other without being stuck to one in particular
@@ -63,17 +65,22 @@ class MainHandler(webapp2.RequestHandler):
 class ArtistHandler(webapp2.RequestHandler):
     def get(self):
 
-        #artist = [ Artist(name='Drake',genre='hip hop',image='https://i.scdn.co/image/cb080366dc8af1fe4dc90c4b9959794794884c66'), Artist(name='John Mayer', genre='neo mellow', image='https://i.scdn.co/image/96a2e527431f7bf39cea4bf8702fc8159f08e2aa'), Artist(name='Logic',genre='rap',image='https://i.scdn.co/image/9aab47129b8405aa80afc5590ed295b7899154f1') ]
+        artist = [ Artist(name='Drake',genre='hip hop',image='https://i.scdn.co/image/cb080366dc8af1fe4dc90c4b9959794794884c66'), Artist(name='John Mayer', genre='neo mellow', image='https://i.scdn.co/image/96a2e527431f7bf39cea4bf8702fc8159f08e2aa'), Artist(name='Logic',genre='rap',image='https://i.scdn.co/image/9aab47129b8405aa80afc5590ed295b7899154f1') ]
 
         #for a in artist:
         #    a.put()
 
+        urlsafe_key2 = self.request.get('key')
+        artist_key = ndb.Key(urlsafe=urlsafe_key2)
+        artist = artist_key.get()
 
         artist_query = Artist.query()
+        # artist_query = artist_query.filter(Artist.artist_key== artist_key)
         artists = artist_query.fetch()
 
         template_vars = {
-            'artists': artists
+            'artists': artists,
+            'artist':artist
         }
 
 
@@ -85,12 +92,12 @@ class ArtistHandler(webapp2.RequestHandler):
         #like
         # Get inforation
         urlsafe_key1 = self.request.get('user_key')
-        urlsafe_key2 = self.request.get('artist_key')
         like = self.request.get('like')
         dislike = self.request.get('dislike')
         # Create an Instance/ interact withb database
-        artist_key = ndb.Key(urlsafe=urlsafe_key2)
+
         user_key = ndb.Key(urlsafe=urlsafe_key1)
+
         plus_one = Plus_One(user_key=user_key,artist_key=artist_key,like=True)
         minus_one = Minus_One(user_key=user_key,artist_key=artist_key,like=False)
         # Save to database/ create a response
