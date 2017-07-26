@@ -12,26 +12,26 @@ jinja_environment = jinja2.Environment(
 class User(ndb.Model):
     name = ndb.StringProperty()
     blurb = ndb.StringProperty()
+    # liked_artists = ndb.JsonProperty()  # ['artist1', 'artist2']
+    # disliked_artists = ndb.JsonProperty()  # ['artist1', 'artist2']
 
 # This is the artist profile
 class Artist(ndb.Model):
     name = ndb.StringProperty()
     genre = ndb.StringProperty()
     image = ndb.StringProperty()
-    #artist_key = ndb.KeyProperty(kind=Artist)
-
 
 # This is the mddle man between the user and the artist it allows them to talk to
 #  each other without being stuck to one in particular
-class Plus_One(ndb.Model):
+class Likes(ndb.Model):
     user_key = ndb.KeyProperty(kind=User)
     artist_key = ndb.KeyProperty(kind=Artist)
-    like = ndb.BooleanProperty()
+    like_state = ndb.StringProperty()  # "liked", "disliked", "neither"
 
-class Minus_One(ndb.Model):
-    user_key = ndb.KeyProperty(kind=User)
-    artist_key = ndb.KeyProperty(kind=Artist)
-    dislike = ndb.BooleanProperty()
+# class Minus_One(ndb.Model):
+#     user_key = ndb.KeyProperty(kind=User)
+#     artist_key = ndb.KeyProperty(kind=Artist)
+#     dislike = ndb.BooleanProperty()
 
 
 # We can start this with being a simple about page then change it to be a dinamic
@@ -65,22 +65,17 @@ class MainHandler(webapp2.RequestHandler):
 class ArtistHandler(webapp2.RequestHandler):
     def get(self):
 
-        artist = [ Artist(name='Drake',genre='hip hop',image='https://i.scdn.co/image/cb080366dc8af1fe4dc90c4b9959794794884c66'), Artist(name='John Mayer', genre='neo mellow', image='https://i.scdn.co/image/96a2e527431f7bf39cea4bf8702fc8159f08e2aa'), Artist(name='Logic',genre='rap',image='https://i.scdn.co/image/9aab47129b8405aa80afc5590ed295b7899154f1') ]
+        #artist = [ Artist(name='Drake',genre='hip hop',image='https://i.scdn.co/image/cb080366dc8af1fe4dc90c4b9959794794884c66'), Artist(name='John Mayer', genre='neo mellow', image='https://i.scdn.co/image/96a2e527431f7bf39cea4bf8702fc8159f08e2aa'), Artist(name='Logic',genre='rap',image='https://i.scdn.co/image/9aab47129b8405aa80afc5590ed295b7899154f1') ]
 
         #for a in artist:
         #    a.put()
 
-        urlsafe_key2 = self.request.get('key')
-        artist_key = ndb.Key(urlsafe=urlsafe_key2)
-        artist = artist_key.get()
 
         artist_query = Artist.query()
-        # artist_query = artist_query.filter(Artist.artist_key== artist_key)
         artists = artist_query.fetch()
 
         template_vars = {
-            'artists': artists,
-            'artist':artist
+            'artists': artists
         }
 
 
@@ -92,12 +87,12 @@ class ArtistHandler(webapp2.RequestHandler):
         #like
         # Get inforation
         urlsafe_key1 = self.request.get('user_key')
+        urlsafe_key2 = self.request.get('artist_key')
         like = self.request.get('like')
         dislike = self.request.get('dislike')
         # Create an Instance/ interact withb database
-
+        artist_key = ndb.Key(urlsafe=urlsafe_key2)
         user_key = ndb.Key(urlsafe=urlsafe_key1)
-
         plus_one = Plus_One(user_key=user_key,artist_key=artist_key,like=True)
         minus_one = Minus_One(user_key=user_key,artist_key=artist_key,like=False)
         # Save to database/ create a response
@@ -134,8 +129,8 @@ class Photo(ndb.Model):
 
 def add_default_photos():
     # Photo URLs from Wikipedia.
-    plus_url = 'https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0ahUKEwiZp4nhj6XVAhUkrlQKHfNYDPgQjRwIBw&url=https%3A%2F%2Fcommons.wikimedia.org%2Fwiki%2FFile%3AHeart_coraz%25C3%25B3n.svg&psig=AFQjCNHYtKb4FdQzF1E-Vm0F8C0oGXXuAA&ust=1501095799756791'
-    minus_url = 'https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&ved=0ahUKEwiblsTWj6XVAhWCqFQKHUgYCL4QjRwIBw&url=https%3A%2F%2Fcommons.wikimedia.org%2Fwiki%2FFile%3ABroken_heart.svg&psig=AFQjCNFjlfeSot6MUm8J3vODtrBIvUu8DA&ust=1501095756797578'
+    plus_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_corazón.svg/130px-Heart_corazón.svg.png'
+    minus_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Broken_heart.svg/166px-Broken_heart.svg.png'
 
     plus = Photo(title='Plus', photo_url=plus_url, like_status=None)
     minus = Photo(title='Minus', photo_url=minus_url, like_status=None)
@@ -166,11 +161,13 @@ class LikeHandler(webapp2.RequestHandler):
     def post(self):
 
         # === 1: Get info from the request. ===
-        urlsafe_key = self.request.get('photo_key')
+        urlsafe_key = self.request.get('photo_key') # take in artist key instead, and the like state string
 
         # === 2: Interact with the database. ===
 
         # Use the URLsafe key to get the photo from the DB.
+        # TODO(Thomas): Get the Like model, using the user_key and artist key
+        # If the Like model doesn't exist, make a new one.
         photo_key = ndb.Key(urlsafe=urlsafe_key)
         photo = photo_key.get()
 
@@ -179,6 +176,7 @@ class LikeHandler(webapp2.RequestHandler):
             photo.like_status = None
 
         # Increase the photo count and update the database.
+        # TODO(Thomas): Update the like status of the Like model.
         photo.like_status = True
         photo.put()
 
@@ -200,8 +198,8 @@ class UnlikeHandler(webapp2.RequestHandler):
         photo = photo_key.get()
 
         # Fix the photo like count just in case it is None.
-        if photo.like_status == True:
-            photo.like_status = None
+        if photo.like_state == True:
+            photo.like_state = None
 
         # Increase the photo count and update the database.
         photo.like_status = False
