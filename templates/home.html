@@ -18,8 +18,10 @@
 <body>
   Welcome, {{current_user}}!<br><br>
   <h3>Check out these artists!</h3><br>
-  <a href="/artist"> Artist </a> <br><br>
 
+  {% for item in artist %}
+  <a href="/artist?key={{item.key.urlsafe() }}"> Artist </a> <br><br>
+  {% endfor %}
 </body>
 
 

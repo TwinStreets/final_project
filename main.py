@@ -95,11 +95,13 @@ class ProfileHandler(webapp2.RequestHandler):
         user = User.query().fetch()
         plus_one = Plus_One.query().fetch()
         minus_one = Minus_One.query().fetch()
+        current_user = users.get_current_user()
 
         template_vars = {
             'user': user,
             'plus_one': plus_one,
-            'minus_one': minus_one
+            'minus_one': minus_one,
+            'current_user': current_user,
         }
 
         template = jinja_environment.get_template('templates/profile.html')
