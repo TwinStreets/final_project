@@ -111,8 +111,7 @@ class ProfileHandler(webapp2.RequestHandler):
             'minus_one': minus_one,
             'current_user': current_user,
         }
-    def post(self):
-        
+
         template = jinja_environment.get_template('templates/profile.html')
         self.response.write(template.render(template_vars))
 
