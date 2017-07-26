@@ -6,7 +6,6 @@
   <!-- <input type="button" onclick="location.href='/';" value="Log Out" /> -->
   <link href="stylesheets/style.css" rel="stylesheet">
 
-
   {% if current_user %}
   <header>
     <input type="button" onclick="location.href='/profile';" value="Profile" />
@@ -24,9 +23,8 @@
   {% endfor %}
 </body>
 
-
 <p>
-
+  <a href="{{logout_url}}"> Log Out </a><br>
 
   {% else %}
 <header>
@@ -44,7 +42,5 @@
 
   {% endif %}
 </p>
-
-
 
 </html>
