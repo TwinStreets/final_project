@@ -7,6 +7,19 @@
   <input type="button" onclick="location.href='/';" value="Back to Home" /> <br><br>
   <body>
     Insert image here
+
+
+    {% for artist in artists %}
+
+            Name: {{artist.name}} <br>
+            Genre: {{artist.genre}} <br>
+            Image: <img src="{{artist.image}}" alt="image of {{artist.name}}"></img>
+              <br><br>
+
+          {% endfor %}
+
+
+    <br><br>
   </body>
   <footer>
 
@@ -26,7 +39,7 @@
     {% endfor %}
 
     </div>
-    
+
     <button class=Minus_One>-1</button>
     <button class=Plus_One>+1</button>
 
