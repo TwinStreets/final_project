@@ -16,8 +16,8 @@ class User(ndb.Model):
 # This is the artist profile
 class Artist(ndb.Model):
     name = ndb.StringProperty()
-    bio = ndb.StringProperty()
-    images = ndb.StringProperty()
+    genre = ndb.StringProperty()
+    image = ndb.StringProperty()
 
 # This is the mddle man between the user and the artist it allows them to talk to
 #  each other without being stuck to one in particular
@@ -59,11 +59,19 @@ class MainHandler(webapp2.RequestHandler):
 class ArtistHandler(webapp2.RequestHandler):
     def get(self):
 
+        #artist = [ Artist(name='Drake',genre='hip hop',image='https://i.scdn.co/image/cb080366dc8af1fe4dc90c4b9959794794884c66'), Artist(name='John Mayer', genre='neo mellow', image='https://i.scdn.co/image/96a2e527431f7bf39cea4bf8702fc8159f08e2aa'), Artist(name='Logic',genre='rap',image='https://i.scdn.co/image/9aab47129b8405aa80afc5590ed295b7899154f1') ]
+
+        #for a in artist:
+        #    a.put()
+
+
         artist_query = Artist.query()
-        artist = artist_query
+        artists = artist_query.fetch()
+
         template_vars = {
-            'artist': artist
+            'artists': artists
         }
+
 
         template = jinja_environment.get_template('templates/artist_page.html')
         self.response.write(template.render(template_vars))
