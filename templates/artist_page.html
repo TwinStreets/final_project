@@ -13,9 +13,10 @@
 
             Name: {{artist.name}} <br>
             Genre: {{artist.genre}} <br>
-            Image: <img src="{{artist.image}}" alt="image of {{artist.name}}"></img>
+            Image: <img src="{{artist.image}}" alt="image of {{artist.name}}" style="width:250px;height:250px;"></img>
               <br><br>
-
+              <button class=Minus_One>-1</button>
+              <button class=Plus_One>+1</button><br>
           {% endfor %}
 
 
@@ -40,8 +41,6 @@
 
     </div>
 
-    <button class=Minus_One>-1</button>
-    <button class=Plus_One>+1</button>
 
   </footer>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

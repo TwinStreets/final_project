@@ -8,8 +8,8 @@
 
   {% if current_user %}
   <header>
-    <input type="button" onclick="location.href='/profile';" value="Profile" />
-    <a id="getout"href="{{logout_url}}"> Log Out__ </a><br>
+    <input type="button" onclick="location.href='/profile';" value=" My Profile" />
+    <a id="getout" href="{{logout_url}}"> Log Out </a><br>
     <div>
       <h1>HomePage</h1>
     </div>
@@ -18,13 +18,25 @@
   Welcome, {{current_user}}!<br><br>
   <h3>Check out these artists!</h3><br>
 
-  {% for item in artist %}
-  <a href="/artist?key={{item.key.urlsafe() }}"> Artist </a> <br><br>
-  {% endfor %}
+  {% for artist in artists %}
+
+          Name: <a href="/artist">{{artist.name}}</a> <br>
+          <img src="{{artist.image}}" alt="image of {{artist.name}}" style="width:160px;height:160px;"></img>
+            <br><br>
+
+        {% endfor %}
+
+
+  <!-- {% for item in artist %}
+
+<a href="/artist?key={{item.key.urlsafe() }}"> Artist </a> <br><br>
+
+Image: <img src="{{artist.image}}" alt="image of {{artist.name}}"></img>
+
+  {% endfor %} -->
 </body>
 
 <p>
-  <a href="{{logout_url}}"> Log Out </a><br>
 
   {% else %}
 <header>

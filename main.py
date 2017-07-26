@@ -37,6 +37,9 @@ class Minus_One(ndb.Model):
 class MainHandler(webapp2.RequestHandler):
     def get(self):
 
+        artist_query = Artist.query()
+        artists = artist_query.fetch()
+
         #creating login and logout
         # Should we fetch () the artist info from the query
         current_user = users.get_current_user()
@@ -47,6 +50,7 @@ class MainHandler(webapp2.RequestHandler):
         "current_user": current_user,
         "login_url": login_url,
         "logout_url": logout_url,
+        'artists': artists
         }
         template = jinja_environment.get_template('templates/home.html')
         self.response.write(template.render(template_vars))
