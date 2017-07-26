@@ -1,4 +1,4 @@
-function clickPlus() {
+/*function clickPlus() {
   // Here, "this" is the button that the user clicked.
   var button = $(this);
 
@@ -44,4 +44,5 @@ function clickMinus() {
   });
 }
 
-$('.photo button').click(clickLike);
+$('.photo button').click(clickPlus);
+$('.photo button').click(clickMinus);
