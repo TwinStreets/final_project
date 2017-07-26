@@ -7,7 +7,6 @@
   <h1> Homepage </h1>
   <link href="stylesheets/style.css" rel="stylesheet">
 
-
   {% if current_user %}
 
     Welcome, {{current_user}}!<br><br>
@@ -24,10 +23,8 @@
 <input type="button" onclick="location.href='/profile';" value="Profile" />
 </body>
 
-
 <p>
-  <a href="{{logout_url}}"> Log Out__ </a><br>
-
+  <a href="{{logout_url}}"> Log Out </a><br>
 
   {% else %}
 
@@ -35,7 +32,5 @@
 
   {% endif %}
 </p>
-
-
 
 </html>
