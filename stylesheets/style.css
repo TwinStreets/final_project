@@ -28,7 +28,7 @@ body header a{
 #getout {
   position: absolute;
   right: 0;
-  padding: 5px;
+  padding: 15px;
 }
 section{
   background: #cea789;
@@ -38,13 +38,14 @@ section{
 
 
 #whoami{
-  padding-top: 1cm;
+  position: absolute;
+  left:0px;
+  padding:15px;
 }
 
 .selected {
 
 .selected{
->>>>>>> 432cb94ba434c8bcc2cf3713605d64a56baed4f4
   color: blue;
-  
+
 }
