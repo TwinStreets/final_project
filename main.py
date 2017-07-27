@@ -77,8 +77,8 @@ class ArtistHandler(webapp2.RequestHandler):
         artist_key = ndb.Key(urlsafe=urlsafe_key2)
         artist = artist_key.get()
         current_user = users.get_current_user()
-        user = User.query().filter(User.email == current_user.email()).get()
-        likes_python = Likes.query().filter(ndb.AND(Likes.artist_key == artist_key, Likes.user_key == user.key)).get()
+        profile = Profile.query().filter(Profile.email == current_user.email()).get()
+        likes_python = Likes.query().filter(ndb.AND(Likes.artist_key == artist_key, Likes.profile_key == profile.key)).get()
         print 'likes_python', likes_python
         if likes_python == None:
             like_state = 'neither'
