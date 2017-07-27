@@ -72,8 +72,11 @@ class ArtistHandler(webapp2.RequestHandler):
 
         artist = [ Artist(name='Drake',genre='hip hop',image='https://i.scdn.co/image/cb080366dc8af1fe4dc90c4b9959794794884c66'), Artist(name='John Mayer', genre='neo mellow', image='https://i.scdn.co/image/96a2e527431f7bf39cea4bf8702fc8159f08e2aa'), Artist(name='Logic',genre='rap',image='https://i.scdn.co/image/9aab47129b8405aa80afc5590ed295b7899154f1') ]
 
-        #for a in artist:
-        #    a.put()
+        artist_query = Artist.query()
+
+        if not artist_query:
+            for a in artist:
+                a.put()
 
         urlsafe_key2 = self.request.get('key')
         artist_key = ndb.Key(urlsafe=urlsafe_key2)
