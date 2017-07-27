@@ -18,10 +18,10 @@
               <br><br>
 
               <!-- TODO: Attach a click handler to each of these buttons -->
-              <a class='likeButton' onclick="clickLike('liked', '{{artist.key.urlsafe()}}')">
+              <a class='like-button' class='selected' onclick="clickLike('liked', '{{artist.key.urlsafe()}}')">
                 <i class="material-icons">thumb_up</i>
               </a>
-              <a class='dislikeButton' onclick="clickLike('disliked', '{{artist.key.urlsafe()}}')">
+              <a class='dislike-button' class='selected' onclick="clickLike('disliked', '{{artist.key.urlsafe()}}')">
                 <i class="material-icons">thumb_down</i>
               </a>
 
