@@ -81,7 +81,6 @@ class ArtistHandler(webapp2.RequestHandler):
         current_user = users.get_current_user()
         profile = Profile.query().filter(Profile.email == current_user.email()).get()
         likes_python = Likes.query().filter(ndb.AND(Likes.artist_key == artist_key, Likes.profile_key == profile.key)).get()
-        print 'likes_python', likes_python
 
         if likes_python == None:
             like_state = 'neither'
@@ -139,10 +138,20 @@ class ProfileHandler(webapp2.RequestHandler):
 class MyProfileHandler(webapp2.RequestHandler):
     def get(self):
         current_user = users.get_current_user()
+
+    #    urlsafe_key2 = self.request.get('key')
+    #    artist_key = ndb.Key(urlsafe=urlsafe_key2)
+    #    artist = artist_key.get()
+
+        #   likes_python = Likes.query().filter(ndb.AND(Likes.artist_key == artist_key, Likes.profile_key == profile.key)).get()
+
+
         profile = Profile.query().filter(Profile.email == current_user.email()).get()
         preferences = Likes.query().fetch()
-        likes = Likes.query().filter(Likes.like_state == 'liked')
-        dislikes = Likes.query().filter(Likes.like_state == 'disliked')
+        likes = Likes.query().filter(Likes.profile_key == profile.key )
+        likes = likes.filter(Likes.like_state == 'liked') #and Likes.profile_key == current_user    ----- )
+        dislikes = Likes.query().filter(Likes.profile_key == profile.key)
+        dislikes = dislikes.filter(Likes.like_state == 'disliked' )
 
         template_vars = {
             'profile': profile,
@@ -196,11 +205,12 @@ class LikeHandler(webapp2.RequestHandler):
         print "profile.key", profile.key
         likes_python = Likes.query().filter(ndb.AND(Likes.artist_key == artist_key_python, Likes.profile_key == profile.key)).get()
         print "likes_python", likes_python
-        new_like_state = ""
         # 3. Add if statements:
         if not likes_python:
             new_likes = Likes(like_state=like_button_python, artist_key=artist_key_python, profile_key=profile.key)
             new_likes.put()
+            self.response.write(like_button_python)
+
         else:
             # Check that the like_button_python and likes_python.like_state are "liked"
             if like_button_python == "liked" and likes_python.like_state == "liked":
@@ -217,7 +227,7 @@ class LikeHandler(webapp2.RequestHandler):
             likes_python.put()
 
         # TODO(Thomas): Write back the new like state.
-            self.response.write('new_like_state')
+            self.response.write(new_like_state)
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),

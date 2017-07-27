@@ -7,28 +7,32 @@
   </head>
   <body>
 
+<input type="button" onclick="location.href='/';" value="Back to Home" /> <br>
+
+<h2> Email: {{profile.email}}</h2>
+<h2> Name: {{profile.name}}</h2>
+<h2> Blurb: {{profile.blurb}}</h2>
 
 
-<h1> Email: {{profile.email}}</h1>
-<h1> Name: {{profile.name}}</h1>
-<h1> Blurb: {{profile.blurb}}</h1>
 
-<h3>Preferences</h3>
-
-{% for p in preferences %}
-{{p}} <br>
-{% endfor %}
 
     <h3>List of Likes</h3>
 
     {% for l in likes %}
-    {{l}} <br>
+
+    <img src="{{l.artist_key.get().image}}" style="width:250px;height:250px;"></img><br>
+    <a href="/artist?key={{l.artist_key.get().key.urlsafe() }}">{{l.artist_key.get().name}}</a> <br>
+     <br>
+    <!-- {{l}} -->
     {% endfor %}
 
     <h3>List of Dislikes</h3>
 
     {% for d in dislikes %}
-    {{d}} <br>
+    <img src="{{d.artist_key.get().image}}" style="width:250px;height:250px;"></img><br>
+    <a href="/artist?key={{d.artist_key.get().key.urlsafe() }}">{{d.artist_key.get().name}}</a> <br>
+   <br>
+    <!-- {{d}} -->
     {% endfor %}
 
 
