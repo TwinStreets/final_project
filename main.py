@@ -119,8 +119,8 @@ class ArtistHandler(webapp2.RequestHandler):
         dislike = self.request.get('dislike')
         # Create an Instance/ interact withb database
         user_key = ndb.Key(urlsafe=urlsafe_key1)
-        plus_one = Plus_One(user_key=user_key,artist_key=artist_key,like=True)
-        minus_one = Minus_One(user_key=user_key,artist_key=artist_key,like=False)
+        plus_one = Plus_One(user_key=user_key,artist_key=artist_key,like='liked')
+        minus_one = Minus_One(user_key=user_key,artist_key=artist_key,dislike='disliked')
         # Save to database/ create a response
         plus_one.put()
         minus_one.put()
@@ -198,16 +198,16 @@ class MyProfileHandler(webapp2.RequestHandler):
 class Photo(ndb.Model):
     title = ndb.StringProperty()
     photo_url = ndb.StringProperty()
-    like_status = ndb.BooleanProperty(default=None)
+    like_status = ndb.StringProperty(default=None)
     created = ndb.DateTimeProperty(auto_now_add=True)
 
 def add_default_photos():
-    # Photo URLs from Wikipedia.
-    #   plus_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_corazon.svg/130px-Heart_corazon.svg.png'
-    #    minus_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Broken_heart.svg/166px-Broken_heart.svg.png'
+    #Photo URLs from Wikipedia.
+    plus_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_coraz%C3%B3n.svg/2000px-Heart_coraz%C3%B3n.svg.png'
+    minus_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Broken_heart.svg/1250px-Broken_heart.svg.png'
 
-    plus = Photo(title='Plus', photo_url=plus_url, like_status=None)
-    minus = Photo(title='Minus', photo_url=minus_url, like_status=None)
+    plus = Photo(title='Plus', photo_url=plus_url, like_state='liked')
+    minus = Photo(title='Minus', photo_url=minus_url, like_state='disliked')
 
     plus.put()
     minus.put()
@@ -240,43 +240,18 @@ class LikeHandler(webapp2.RequestHandler):
         # === 2: Interact with the database. ===
 
         # Use the URLsafe key to get the photo from the DB.
-        # TO DO(Thomas): Get the Like model, using the user_key and artist key
+        # TODO(Thomas): Get the Like model, using the user_key and artist key
         # If the Like model doesn't exist, make a new one.
         photo_key = ndb.Key(urlsafe=urlsafe_key)
         photo = photo_key.get()
 
         # Fix the photo like count just in case it is None.
-        if photo.like_status == False:
-            photo.like_status = None
+        if photo.like_state == 'neither':
+            photo.like_state = 'liked'
 
         # Increase the photo count and update the database.
-        # TO DO(Thomas): Update the like status of the Like model.
-        photo.like_status = True
-        photo.put()
-
-        # === 3: Send a response. ===
-        # Send the updated count back to the client.
-        self.response.write(photo.like_status)
-
-class UnlikeHandler(webapp2.RequestHandler):
-    # Handles increasing the likes when you click the button.
-    def post(self):
-
-        # === 1: Get info from the request. ===
-        urlsafe_key = self.request.get('photo_key')
-
-        # === 2: Interact with the database. ===
-
-        # Use the URLsafe key to get the photo from the DB.
-        photo_key = ndb.Key(urlsafe=urlsafe_key)
-        photo = photo_key.get()
-
-        # Fix the photo like count just in case it is None.
-        if photo.like_state == True:
-            photo.like_state = None
-
-        # Increase the photo count and update the database.
-        photo.like_status = False
+        # TODO(Thomas): Update the like status of the Like model.
+        photo.like_status = 'liked'
         photo.put()
 
         # === 3: Send a response. ===
@@ -289,6 +264,5 @@ app = webapp2.WSGIApplication([
     ('/profile', ProfileHandler),
     ('/myprofile', MyProfileHandler),
     ('/photo', PhotoHandler),
-    ('/unlike', UnlikeHandler),
     ('/like', LikeHandler)
 ], debug=True)
