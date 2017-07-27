@@ -140,11 +140,15 @@ class MyProfileHandler(webapp2.RequestHandler):
     def get(self):
         current_user = users.get_current_user()
         profile = Profile.query().filter(Profile.email == current_user.email()).get()
-        likes = Likes.query().fetch()
+        preferences = Likes.query().fetch()
+        likes = Likes.query().filter(Likes.like_state == 'liked')
+        dislikes = Likes.query().filter(Likes.like_state == 'disliked')
 
         template_vars = {
             'profile': profile,
-            'likes':likes
+            'preferences':preferences,
+            'likes':likes,
+            'dislikes':dislikes,
         }
 
         template = jinja_environment.get_template('templates/myprofile.html')
