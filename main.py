@@ -37,6 +37,7 @@ class MainHandler(webapp2.RequestHandler):
         artist_query = Artist.query()
         artists = artist_query.fetch()
 
+
         #creating login and logout
         # Should we fetch () the artist info from the query
         current_user = users.get_current_user()
@@ -51,7 +52,8 @@ class MainHandler(webapp2.RequestHandler):
         "current_user": current_user,
         "login_url": login_url,
         "logout_url": logout_url,
-        'artists': artists
+        'artists': artists,
+
         }
 
 
@@ -77,8 +79,8 @@ class ArtistHandler(webapp2.RequestHandler):
         artist_key = ndb.Key(urlsafe=urlsafe_key2)
         artist = artist_key.get()
         current_user = users.get_current_user()
-        user = User.query().filter(User.email == current_user.email()).get()
-        likes_python = Likes.query().filter(ndb.AND(Likes.artist_key == artist_key, Likes.user_key == user.key)).get()
+        profile = Profile.query().filter(Profile.email == current_user.email()).get()
+        likes_python = Likes.query().filter(ndb.AND(Likes.artist_key == artist_key, Likes.profile_key == profile.key)).get()
         print 'likes_python', likes_python
         if likes_python == None:
             like_state = 'neither'
@@ -106,7 +108,7 @@ class ProfileHandler(webapp2.RequestHandler):
 
         profiles = Profile.query().fetch()
         current_user = users.get_current_user()
-    #    blurb =
+
         email = current_user.email()
         profile_query = Profile.query().filter(Profile.email == email)
         profile_exists = profile_query.get()
@@ -137,9 +139,11 @@ class MyProfileHandler(webapp2.RequestHandler):
     def get(self):
         current_user = users.get_current_user()
         profile = Profile.query().filter(Profile.email == current_user.email()).get()
+        likes = Likes.query().fetch()
 
         template_vars = {
             'profile': profile,
+            'likes':likes
         }
 
         template = jinja_environment.get_template('templates/myprofile.html')
