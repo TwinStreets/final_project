@@ -1,9 +1,6 @@
 application: hao-kindling
-<<<<<<< HEAD
-version: 1
-=======
 version: 2
->>>>>>> 5990cac38b0827d38e47ff1ff7a013a636221b55
+
 runtime: python27
 api_version: 1
 threadsafe: yes
