@@ -156,18 +156,6 @@ class Photo(ndb.Model):
     like_status = ndb.StringProperty(default=None)
     created = ndb.DateTimeProperty(auto_now_add=True)
 
-def add_default_photos():
-    #Photo URLs from Wikipedia.
-    plus_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_coraz%C3%B3n.svg/2000px-Heart_coraz%C3%B3n.svg.png'
-    minus_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Broken_heart.svg/1250px-Broken_heart.svg.png'
-
-    plus = Photo(title='Plus', photo_url=plus_url, like_state='neither')
-    minus = Photo(title='Minus', photo_url=minus_url, like_state='neither')
-
-    plus.put()
-    minus.put()
-
-    return [plus, minus]
 
 class PhotoHandler(webapp2.RequestHandler):
     def get(self):
@@ -188,10 +176,7 @@ class PhotoHandler(webapp2.RequestHandler):
 class LikeHandler(webapp2.RequestHandler):
     # Handles increasing the likes when you click the button.
     def post(self):
-
-        #like
-        # Get inforation
-
+        # Get information
         artist_key_python = ndb.Key(urlsafe=self.request.get('artist_key'))
         like_button_python = self.request.get('like_button')
 
