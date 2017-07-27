@@ -5,9 +5,11 @@ function clickLike(likeButtonParam, artistKeyParam) {
     {'like_button': likeButtonParam, 'artist_key': artistKeyParam},
     function(response) {
       console.log(response);
+
       // TODO(Thomas): Call the updateLikeButtonClasses function here,
       // passing in the like state that was returned from the /like hander.
       // updateLikeButtonClasses(...);
+        updateLikeButtonClasses(new_like_state);
     });
 }
 
