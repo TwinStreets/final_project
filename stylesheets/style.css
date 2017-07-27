@@ -27,3 +27,10 @@ body header a{
 #getout {
   text-align: right;
 }
+
+section{
+  background: green;
+  padding: 20px;
+  box-shadow: 0 2px 4px gray;
+
+}
