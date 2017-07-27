@@ -28,6 +28,14 @@ body header a{
   text-align: right;
 }
 
+ HEAD
+section{
+  background: green;
+  padding: 20px;
+  box-shadow: 0 2px 4px gray;
+
+
 .selected {
   color: blue;
+>>>>> 5452653684951592574b4623912e9c83ea6f0f1b
 }
