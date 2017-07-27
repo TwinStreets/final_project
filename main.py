@@ -53,7 +53,8 @@ class MainHandler(webapp2.RequestHandler):
         if not current_user:
             login_url = users.create_login_url('/profile')
             # self.redirect('/')
-            # return  # Return to exit the handler once we've redirected.
+            # return
+            # Return to exit the handler once we've redirected.
 
         # By this point I am guaranteed to get a logged-in user.
 
@@ -97,36 +98,24 @@ class ArtistHandler(webapp2.RequestHandler):
         urlsafe_key2 = self.request.get('key')
         artist_key = ndb.Key(urlsafe=urlsafe_key2)
         artist = artist_key.get()
-
-        artist_query = Artist.query()
-        artists = artist_query.fetch()
+        current_user = users.get_current_user()
+        user = User.query().filter(User.email == current_user.email()).get()
+        likes_python = Likes.query().filter(ndb.AND(Likes.artist_key == artist_key, Likes.user_key == user.key)).get()
 
         template_vars = {
-            'artists': artists,
-            'artist':artist
+            'artist':artist,
+            # TODO: Get the actual current like_state,
+            # or "neither" if there is no Likes object in the database
+            # for this user and artist.
+            'like_state': likes_python.like_state,
         }
-
 
         template = jinja_environment.get_template('templates/artist_page.html')
         self.response.write(template.render(template_vars))
 
     def post(self):
+        pass
 
-        #like
-        # Get inforation
-        urlsafe_key1 = self.request.get('user_key')
-        like = self.request.get('like')
-        dislike = self.request.get('dislike')
-        # Create an Instance/ interact withb database
-        user_key = ndb.Key(urlsafe=urlsafe_key1)
-        plus_one = Plus_One(user_key=user_key,artist_key=artist_key,like='liked')
-        minus_one = Minus_One(user_key=user_key,artist_key=artist_key,dislike='disliked')
-        # Save to database/ create a response
-        plus_one.put()
-        minus_one.put()
-        # Redirect?
-
-        #dislike
 
 # This is the profile page, which is supposed to show you all the stuff in the data base about you
 class ProfileHandler(webapp2.RequestHandler):
@@ -145,8 +134,6 @@ class ProfileHandler(webapp2.RequestHandler):
         if not user_exists:
             template_vars = {
                 'user': user,
-            #    'plus_one': plus_one,
-            #    'minus_one': minus_one,
                 'current_user': current_user,
             }
 
@@ -155,10 +142,6 @@ class ProfileHandler(webapp2.RequestHandler):
 
         else:
             self.redirect('/')
-
-
-
-
 
     def post(self):
         user = users.get_current_user()
@@ -206,8 +189,8 @@ def add_default_photos():
     plus_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_coraz%C3%B3n.svg/2000px-Heart_coraz%C3%B3n.svg.png'
     minus_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Broken_heart.svg/1250px-Broken_heart.svg.png'
 
-    plus = Photo(title='Plus', photo_url=plus_url, like_state='liked')
-    minus = Photo(title='Minus', photo_url=minus_url, like_state='disliked')
+    plus = Photo(title='Plus', photo_url=plus_url, like_state='neither')
+    minus = Photo(title='Minus', photo_url=minus_url, like_state='neither')
 
     plus.put()
     minus.put()
@@ -234,29 +217,45 @@ class LikeHandler(webapp2.RequestHandler):
     # Handles increasing the likes when you click the button.
     def post(self):
 
-        # === 1: Get info from the request. ===
-        urlsafe_key = self.request.get('photo_key') # take in artist key instead, and the like state string
+        #like
+        # Get inforation
 
-        # === 2: Interact with the database. ===
+        artist_key_python = ndb.Key(urlsafe=self.request.get('artist_key'))
+        like_button_python = self.request.get('like_button')
 
-        # Use the URLsafe key to get the photo from the DB.
-        # TODO(Thomas): Get the Like model, using the user_key and artist key
-        # If the Like model doesn't exist, make a new one.
-        photo_key = ndb.Key(urlsafe=urlsafe_key)
-        photo = photo_key.get()
+        # TODO:
+        # 1. Get the current_user, and use it to get the User
+        current_user = users.get_current_user()
+        user = User.query().filter(User.email == current_user.email()).get()
+        print "user", user
+        # 2. Get the Likes model for the User and Artist
 
-        # Fix the photo like count just in case it is None.
-        if photo.like_state == 'neither':
-            photo.like_state = 'liked'
+        print "artist_key_python", artist_key_python
+        print "user.key", user.key
+        likes_python = Likes.query().filter(ndb.AND(Likes.artist_key == artist_key_python, Likes.user_key == user.key)).get()
+        print "likes_python", likes_python
 
-        # Increase the photo count and update the database.
-        # TODO(Thomas): Update the like status of the Like model.
-        photo.like_status = 'liked'
-        photo.put()
+        # 3. Add if statements:
+        if not likes_python:
+            new_likes = Likes(like_state=like_button_python, artist_key=artist_key_python, user_key=user.key)
+            new_likes.put()
+        else:
+            # Check that the like_button_python and likes.like_state are "liked"
+            if like_button_python == "liked" and likes_python.like_state == "liked":
+                new_like_state = "neither"
 
-        # === 3: Send a response. ===
-        # Send the updated count back to the client.
-        self.response.write(photo.like_status)
+            # Check that the like_button_python and likes.like_state are "disliked"
+            elif like_button_python == "disliked" and likes_python.like_state == "disliked":
+                new_like_state = "neither"
+            # Check that the like_button_python and likes.like_state are different
+            else:
+                new_like_state = like_button_python
+
+            likes_python.like_state = new_like_state
+            likes_python.put()
+
+        # TODO(Thomas): Write back the new like state.
+        self.response.write('hello')
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
