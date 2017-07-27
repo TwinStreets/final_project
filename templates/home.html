@@ -8,7 +8,7 @@
 
   {% if current_user %}
   <header>
-    <input type="button" onclick="location.href='/myprofile';" value=" My Profile" />
+    <input id="whoami"type="button" onclick="location.href='/myprofile';" value=" My Profile" />
     <a id="getout" href="{{logout_url}}"> Log Out </a><br>
     <div>
       <h1>HomePage</h1>
@@ -19,7 +19,7 @@
   <h3>Check out these artists!</h3><br>
 
   {% for artist in artists %}
-        <section style="width:200px;height200px;">
+        <section style="width:160px;height190px;">
           Name: <a href="/artist?key={{artist.key.urlsafe() }}">{{artist.name}}</a> <br>
           <img src="{{artist.image}}" alt="image of {{artist.name}}" style="width:160px;height:160px;"></img>
         </section>
@@ -50,9 +50,9 @@ Image: <img src="{{artist.image}}" alt="image of {{artist.name}}"></img>
  </div>
 <br>
 
-
+<div>
 <img src = "images/fire.png" alt="image of fox"></img>
-
+</div>
  <div>
   <a href="{{login_url}}"> Log In </a><br>
 </div>

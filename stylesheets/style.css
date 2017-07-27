@@ -9,6 +9,7 @@ body{
 }
 
 header{
+  position: relative;
   background: brown;
   padding: 15px;
   font-weight: bold;
@@ -25,15 +26,25 @@ body header a{
 }
 
 #getout {
-  text-align: right;
+  position: absolute;
+  right: 0;
+  padding: 5px;
 }
-
- HEAD
 section{
-  background: green;
+  background: #cea789;
   padding: 20px;
   box-shadow: 0 2px 4px gray;
+}
+
+
+#whoami{
+  padding-top: 1cm;
+}
+
+.selected {
 
 .selected{
+>>>>>>> 432cb94ba434c8bcc2cf3713605d64a56baed4f4
   color: blue;
+  
 }
