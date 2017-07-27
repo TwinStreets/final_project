@@ -12,6 +12,7 @@ jinja_environment = jinja2.Environment(
 class User(ndb.Model):
     name = ndb.StringProperty()
     blurb = ndb.StringProperty()
+    email = ndb.StringProperty()
     # liked_artists = ndb.JsonProperty()  # ['artist1', 'artist2']
     # disliked_artists = ndb.JsonProperty()  # ['artist1', 'artist2']
 
@@ -48,12 +49,33 @@ class MainHandler(webapp2.RequestHandler):
         login_url = users.create_login_url('/')
         logout_url = users.create_logout_url('/')
 
+         # Force the user to log in if they haven't already.
+        if not current_user:
+            login_url = users.create_login_url('/profile')
+            # self.redirect('/')
+            # return  # Return to exit the handler once we've redirected.
+
+        # By this point I am guaranteed to get a logged-in user.
+
+    #    email = current_user.email()
+    #    user_query = Profile.query().filter(Profile.email == email)
+    #    profile = profile_query.get()
+
+        # If we did not find a matching profile, create and insert one.
+    #    if not profile:
+    #        profile = Profile(email=email)
+    #        profile.put()
+
+        # By this point, I am guaranteed to have a profile.
+
         template_vars = {
         "current_user": current_user,
         "login_url": login_url,
         "logout_url": logout_url,
         'artists': artists
         }
+
+
         template = jinja_environment.get_template('templates/home.html')
         self.response.write(template.render(template_vars))
     def post(self):
@@ -115,6 +137,52 @@ class ProfileHandler(webapp2.RequestHandler):
         #   minus_one = Minus_One.query().fetch()
         current_user = users.get_current_user()
     #    blurb =
+        email = current_user.email()
+        user_query = User.query().filter(User.email == email)
+        user_exists = user_query.get()
+
+# check for user profile experience
+        if not user_exists:
+            template_vars = {
+                'user': user,
+            #    'plus_one': plus_one,
+            #    'minus_one': minus_one,
+                'current_user': current_user,
+            }
+
+            template = jinja_environment.get_template('templates/profile.html')
+            self.response.write(template.render(template_vars))
+
+        else:
+            self.redirect('/')
+
+
+
+
+
+    def post(self):
+        user = users.get_current_user()
+        email= user.email()
+        name = self.request.get('name')
+        blurb = self.request.get('blurb')
+        user = User(name=name,blurb=blurb,email=email)
+        user.put()
+        self.redirect('/')
+
+class MyProfileHandler(webapp2.RequestHandler):
+    def get(self):
+
+        user = User.query().fetch()
+        #   plus_one = Plus_One.query().fetch()
+        #   minus_one = Minus_One.query().fetch()
+        current_user = users.get_current_user()
+    #    blurb =
+
+#NEED TO WORK ON ADDING KEYS TO USERS
+
+        #  urlsafe_key1 = self.request.get('key')
+        #   user_key = ndb.Key(urlsafe=urlsafe_key1)
+        #   user_key1 = artist_key.get()
 
         template_vars = {
             'user': user,
@@ -123,15 +191,9 @@ class ProfileHandler(webapp2.RequestHandler):
             'current_user': current_user,
         }
 
-        template = jinja_environment.get_template('templates/profile.html')
+        template = jinja_environment.get_template('templates/myprofile.html')
         self.response.write(template.render(template_vars))
 
-    def post(self):
-        name = self.request.get('name')
-        blurb = self.request.get('blurb')
-        user = User(name=name,blurb=blurb)
-        user.put()
-        self.redirect('/profile')
 
 class Photo(ndb.Model):
     title = ndb.StringProperty()
@@ -188,7 +250,7 @@ class LikeHandler(webapp2.RequestHandler):
             photo.like_status = None
 
         # Increase the photo count and update the database.
-        # TODO(Thomas): Update the like status of the Like model.
+        # TO DO(Thomas): Update the like status of the Like model.
         photo.like_status = True
         photo.put()
 
@@ -225,6 +287,7 @@ app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/artist', ArtistHandler),
     ('/profile', ProfileHandler),
+    ('/myprofile', MyProfileHandler),
     ('/photo', PhotoHandler),
     ('/unlike', UnlikeHandler),
     ('/like', LikeHandler)
