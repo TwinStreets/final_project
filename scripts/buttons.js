@@ -1,25 +1,37 @@
-function clickLike() {
-  // Here, "this" is the button that the user clicked.
-  var button = $(this);
-
-  // Move through the DOM tree to find the "likes"
-  // element that corresponds to the clicked button.
-
-  // Look through parents of this to find .photo.
-  var photo = $(this).parents('.photo');
-
-  // Look inside photo to find .likes.
-  var likes = $(photo).find('.likes');
-
-  // Get the URLsafe key from the button value.
-  var urlsafeKey = $(button).val();
-
-  // Send a POST request and handle the response.
-  $.post('/likes', {'photo_key': urlsafeKey, 'artist_key': urlsafe_key2}, function(response) {
-    // Update the number in the "like" element.
-    $(likes).text(response);
-  });
+function clickLike(likeButtonParam, artistKeyParam) {
+  // Make a post call to /likes, passing along the like state and artist key
+  $.post(
+    '/like',
+    {'like_button': likeButtonParam, 'artist_key': artistKeyParam},
+    function(response) {
+      console.log(response);
+      // TODO(Thomas): Call the updateLikeButtonClasses function here,
+      // passing in the like state that was returned from the /like hander.
+      // updateLikeButtonClasses(...);
+    });
 }
 
+function updateLikeButtonClasses(likeState) {
+  console.log("updateLikeButtonClasses");
 
-$('.photo button').click(clickLike);
+  // Get both of the like buttons.
+  const likeButton = $('.like-button')
+  const dislikeButton = $('.dislike-button')
+
+  // Update the classes of the like buttons.
+  if (likeState === "liked") {
+    likeButton.addClass('selected')
+    dislikeButton.removeClass('selected')
+  } else if (likeState === "disliked") {
+    likeButton.removeClass('selected')
+    dislikeButton.addClass('selected')
+  } else {
+    likeButton.removeClass('selected')
+    dislikeButton.removeClass('selected')
+  }
+
+}
+
+// Get the current like state.
+const likeState = $('#dataContainer')[0].dataset.likeState;
+updateLikeButtonClasses(likeState);

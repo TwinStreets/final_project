@@ -27,3 +27,7 @@ body header a{
 #getout {
   text-align: right;
 }
+
+.selected {
+  color: blue;
+}

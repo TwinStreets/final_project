@@ -1,23 +1,31 @@
 <!DOCTYPE html>
 <html>
-  <link href="stylesheets/style.css" rel="stylesheet">
   <head>
     <title>Artist name</title>
+    <link href="stylesheets/style.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        rel="stylesheet">
   </head>
   <input type="button" onclick="location.href='/';" value="Back to Home" /> <br><br>
   <body>
 
+            <template id="dataContainer" data-like-state='{{like_state}}'></template>
 
             Name: {{artist.name}} <br>
             Genre: {{artist.genre}} <br>
             Image: <img src="{{artist.image}}" alt="image of {{artist.name}}" style="width:250px;height:250px;"></img>
               <br><br>
-              <button class=Minus_One>-1</button>
-              <button class=Plus_One>+1</button><br>
-              <a href ='/like'><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_coraz%C3%B3n.svg/2000px-Heart_coraz%C3%B3n.svg.png" height='50px' width='50px'></a>
-              <a href ='/like'><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Broken_heart.svg/1250px-Broken_heart.svg.png" height='43px' width='43px'></a>
 
-
+              <!-- TODO: Attach a click handler to each of these buttons -->
+              <!-- <a onclick="clickLike('liked', '{{artist.key.urlsafe()}}')"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_coraz%C3%B3n.svg/2000px-Heart_coraz%C3%B3n.svg.png" height='50px' width='50px'></a> -->
+              <!-- <a onclick="clickLike('disliked', '{{artist.key.urlsafe()}}')"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Broken_heart.svg/1250px-Broken_heart.svg.png" height='43px' width='43px'></a> -->
+              <a class='like-button' onclick="clickLike('liked', '{{artist.key.urlsafe()}}')">
+                <i class="material-icons">thumb_up</i>
+              </a>
+              <a class='dislike-button' onclick="clickLike('disliked', '{{artist.key.urlsafe()}}')">
+                <i class="material-icons">thumb_down</i>
+              </a>
 
     <br><br>
   </body>
