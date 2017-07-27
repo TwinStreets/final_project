@@ -101,13 +101,18 @@ class ArtistHandler(webapp2.RequestHandler):
         current_user = users.get_current_user()
         user = User.query().filter(User.email == current_user.email()).get()
         likes_python = Likes.query().filter(ndb.AND(Likes.artist_key == artist_key, Likes.user_key == user.key)).get()
+        print 'likes_python', likes_python
+        if likes_python == None:
+            like_state = 'neither'
+        else:
+            like_state = likes_python.like_state
 
         template_vars = {
             'artist':artist,
             # TODO: Get the actual current like_state,
             # or "neither" if there is no Likes object in the database
             # for this user and artist.
-            'like_state': likes_python.like_state,
+            'like_state': like_state
         }
 
         template = jinja_environment.get_template('templates/artist_page.html')
@@ -240,14 +245,14 @@ class LikeHandler(webapp2.RequestHandler):
             new_likes = Likes(like_state=like_button_python, artist_key=artist_key_python, user_key=user.key)
             new_likes.put()
         else:
-            # Check that the like_button_python and likes.like_state are "liked"
+            # Check that the like_button_python and likes_python.like_state are "liked"
             if like_button_python == "liked" and likes_python.like_state == "liked":
                 new_like_state = "neither"
 
-            # Check that the like_button_python and likes.like_state are "disliked"
+            # Check that the like_button_python and likes_python.like_state are "disliked"
             elif like_button_python == "disliked" and likes_python.like_state == "disliked":
                 new_like_state = "neither"
-            # Check that the like_button_python and likes.like_state are different
+            # Check that the like_button_python and likes_python.like_state are different
             else:
                 new_like_state = like_button_python
 
@@ -255,7 +260,7 @@ class LikeHandler(webapp2.RequestHandler):
             likes_python.put()
 
         # TODO(Thomas): Write back the new like state.
-        self.response.write('hello')
+            self.response.write('new_like_state')
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
