@@ -7,12 +7,17 @@
         href="https://fonts.googleapis.com/icon?family=Material+Icons"
         rel="stylesheet">
   </head>
+  <header>
   <input type="button" onclick="location.href='/';" value="Back to Home" /> <br><br>
+  <div>
+    <h1>{{artist.name}}</h1>
+  </div>
+</header>
   <body>
 
             <template id="dataContainer" data-like-state='{{like_state}}'></template>
 
-            Name: {{artist.name}} <br>
+            <h4> Name: {{artist.name}} <br>
             Genre: {{artist.genre}} <br>
             Image: <img src="{{artist.image}}" alt="image of {{artist.name}}" style="width:250px;height:250px;"></img>
               <br><br>
