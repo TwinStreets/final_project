@@ -12,6 +12,7 @@ jinja_environment = jinja2.Environment(
 class User(ndb.Model):
     name = ndb.StringProperty()
     blurb = ndb.StringProperty()
+    email = ndb.StringProperty()
     # liked_artists = ndb.JsonProperty()  # ['artist1', 'artist2']
     # disliked_artists = ndb.JsonProperty()  # ['artist1', 'artist2']
 
@@ -48,12 +49,33 @@ class MainHandler(webapp2.RequestHandler):
         login_url = users.create_login_url('/')
         logout_url = users.create_logout_url('/')
 
+         # Force the user to log in if they haven't already.
+        if not current_user:
+            login_url = users.create_login_url('/profile')
+            # self.redirect('/')
+            # return  # Return to exit the handler once we've redirected.
+
+        # By this point I am guaranteed to get a logged-in user.
+
+    #    email = current_user.email()
+    #    user_query = Profile.query().filter(Profile.email == email)
+    #    profile = profile_query.get()
+
+        # If we did not find a matching profile, create and insert one.
+    #    if not profile:
+    #        profile = Profile(email=email)
+    #        profile.put()
+
+        # By this point, I am guaranteed to have a profile.
+
         template_vars = {
         "current_user": current_user,
         "login_url": login_url,
         "logout_url": logout_url,
         'artists': artists
         }
+
+
         template = jinja_environment.get_template('templates/home.html')
         self.response.write(template.render(template_vars))
     def post(self):
@@ -97,8 +119,8 @@ class ArtistHandler(webapp2.RequestHandler):
         dislike = self.request.get('dislike')
         # Create an Instance/ interact withb database
         user_key = ndb.Key(urlsafe=urlsafe_key1)
-        plus_one = Plus_One(user_key=user_key,artist_key=artist_key,like=True)
-        minus_one = Minus_One(user_key=user_key,artist_key=artist_key,like=False)
+        plus_one = Plus_One(user_key=user_key,artist_key=artist_key,like='liked')
+        minus_one = Minus_One(user_key=user_key,artist_key=artist_key,dislike='disliked')
         # Save to database/ create a response
         plus_one.put()
         minus_one.put()
@@ -115,6 +137,52 @@ class ProfileHandler(webapp2.RequestHandler):
         #   minus_one = Minus_One.query().fetch()
         current_user = users.get_current_user()
     #    blurb =
+        email = current_user.email()
+        user_query = User.query().filter(User.email == email)
+        user_exists = user_query.get()
+
+# check for user profile experience
+        if not user_exists:
+            template_vars = {
+                'user': user,
+            #    'plus_one': plus_one,
+            #    'minus_one': minus_one,
+                'current_user': current_user,
+            }
+
+            template = jinja_environment.get_template('templates/profile.html')
+            self.response.write(template.render(template_vars))
+
+        else:
+            self.redirect('/')
+
+
+
+
+
+    def post(self):
+        user = users.get_current_user()
+        email= user.email()
+        name = self.request.get('name')
+        blurb = self.request.get('blurb')
+        user = User(name=name,blurb=blurb,email=email)
+        user.put()
+        self.redirect('/')
+
+class MyProfileHandler(webapp2.RequestHandler):
+    def get(self):
+
+        user = User.query().fetch()
+        #   plus_one = Plus_One.query().fetch()
+        #   minus_one = Minus_One.query().fetch()
+        current_user = users.get_current_user()
+    #    blurb =
+
+#NEED TO WORK ON ADDING KEYS TO USERS
+
+        #  urlsafe_key1 = self.request.get('key')
+        #   user_key = ndb.Key(urlsafe=urlsafe_key1)
+        #   user_key1 = artist_key.get()
 
         template_vars = {
             'user': user,
@@ -123,29 +191,23 @@ class ProfileHandler(webapp2.RequestHandler):
             'current_user': current_user,
         }
 
-        template = jinja_environment.get_template('templates/profile.html')
+        template = jinja_environment.get_template('templates/myprofile.html')
         self.response.write(template.render(template_vars))
 
-    def post(self):
-        name = self.request.get('name')
-        blurb = self.request.get('blurb')
-        user = User(name=name,blurb=blurb)
-        user.put()
-        self.redirect('/profile')
 
 class Photo(ndb.Model):
     title = ndb.StringProperty()
     photo_url = ndb.StringProperty()
-    like_status = ndb.BooleanProperty(default=None)
+    like_status = ndb.StringProperty(default=None)
     created = ndb.DateTimeProperty(auto_now_add=True)
 
 def add_default_photos():
-    # Photo URLs from Wikipedia.
-    #   plus_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_corazon.svg/130px-Heart_corazon.svg.png'
-    #    minus_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Broken_heart.svg/166px-Broken_heart.svg.png'
+    #Photo URLs from Wikipedia.
+    plus_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_coraz%C3%B3n.svg/2000px-Heart_coraz%C3%B3n.svg.png'
+    minus_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Broken_heart.svg/1250px-Broken_heart.svg.png'
 
-    plus = Photo(title='Plus', photo_url=plus_url, like_status=None)
-    minus = Photo(title='Minus', photo_url=minus_url, like_status=None)
+    plus = Photo(title='Plus', photo_url=plus_url, like_state='liked')
+    minus = Photo(title='Minus', photo_url=minus_url, like_state='disliked')
 
     plus.put()
     minus.put()
@@ -178,43 +240,18 @@ class LikeHandler(webapp2.RequestHandler):
         # === 2: Interact with the database. ===
 
         # Use the URLsafe key to get the photo from the DB.
-        # TO DO(Thomas): Get the Like model, using the user_key and artist key
+        # TODO(Thomas): Get the Like model, using the user_key and artist key
         # If the Like model doesn't exist, make a new one.
         photo_key = ndb.Key(urlsafe=urlsafe_key)
         photo = photo_key.get()
 
         # Fix the photo like count just in case it is None.
-        if photo.like_status == False:
-            photo.like_status = None
+        if photo.like_state == 'neither':
+            photo.like_state = 'liked'
 
         # Increase the photo count and update the database.
         # TODO(Thomas): Update the like status of the Like model.
-        photo.like_status = True
-        photo.put()
-
-        # === 3: Send a response. ===
-        # Send the updated count back to the client.
-        self.response.write(photo.like_status)
-
-class UnlikeHandler(webapp2.RequestHandler):
-    # Handles increasing the likes when you click the button.
-    def post(self):
-
-        # === 1: Get info from the request. ===
-        urlsafe_key = self.request.get('photo_key')
-
-        # === 2: Interact with the database. ===
-
-        # Use the URLsafe key to get the photo from the DB.
-        photo_key = ndb.Key(urlsafe=urlsafe_key)
-        photo = photo_key.get()
-
-        # Fix the photo like count just in case it is None.
-        if photo.like_state == True:
-            photo.like_state = None
-
-        # Increase the photo count and update the database.
-        photo.like_status = False
+        photo.like_status = 'liked'
         photo.put()
 
         # === 3: Send a response. ===
@@ -225,7 +262,7 @@ app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/artist', ArtistHandler),
     ('/profile', ProfileHandler),
+    ('/myprofile', MyProfileHandler),
     ('/photo', PhotoHandler),
-    ('/unlike', UnlikeHandler),
     ('/like', LikeHandler)
 ], debug=True)
