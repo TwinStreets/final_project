@@ -202,7 +202,7 @@ class LikeHandler(webapp2.RequestHandler):
         print "profile.key", profile.key
         likes_python = Likes.query().filter(ndb.AND(Likes.artist_key == artist_key_python, Likes.profile_key == profile.key)).get()
         print "likes_python", likes_python
-
+        new_like_state = ""
         # 3. Add if statements:
         if not likes_python:
             new_likes = Likes(like_state=like_button_python, artist_key=artist_key_python, profile_key=profile.key)
