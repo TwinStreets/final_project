@@ -81,7 +81,6 @@ class ArtistHandler(webapp2.RequestHandler):
         current_user = users.get_current_user()
         profile = Profile.query().filter(Profile.email == current_user.email()).get()
         likes_python = Likes.query().filter(ndb.AND(Likes.artist_key == artist_key, Likes.profile_key == profile.key)).get()
-        print 'likes_python', likes_python
 
         if likes_python == None:
             like_state = 'neither'
@@ -196,11 +195,12 @@ class LikeHandler(webapp2.RequestHandler):
         print "profile.key", profile.key
         likes_python = Likes.query().filter(ndb.AND(Likes.artist_key == artist_key_python, Likes.profile_key == profile.key)).get()
         print "likes_python", likes_python
-        new_like_state = ""
         # 3. Add if statements:
         if not likes_python:
             new_likes = Likes(like_state=like_button_python, artist_key=artist_key_python, profile_key=profile.key)
             new_likes.put()
+            self.response.write(like_button_python)
+
         else:
             # Check that the like_button_python and likes_python.like_state are "liked"
             if like_button_python == "liked" and likes_python.like_state == "liked":
@@ -217,7 +217,7 @@ class LikeHandler(webapp2.RequestHandler):
             likes_python.put()
 
         # TODO(Thomas): Write back the new like state.
-            self.response.write('new_like_state')
+            self.response.write(new_like_state)
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
