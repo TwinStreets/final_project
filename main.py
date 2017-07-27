@@ -82,6 +82,7 @@ class ArtistHandler(webapp2.RequestHandler):
         profile = Profile.query().filter(Profile.email == current_user.email()).get()
         likes_python = Likes.query().filter(ndb.AND(Likes.artist_key == artist_key, Likes.profile_key == profile.key)).get()
         print 'likes_python', likes_python
+
         if likes_python == None:
             like_state = 'neither'
         else:
@@ -92,7 +93,7 @@ class ArtistHandler(webapp2.RequestHandler):
             # TODO: Get the actual current like_state,
             # or "neither" if there is no Likes object in the database
             # for this user and artist.
-            'like_state': like_state
+            'like_state': like_state # MADE CHANGE *****
         }
 
         template = jinja_environment.get_template('templates/artist_page.html')
