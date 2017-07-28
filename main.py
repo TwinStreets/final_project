@@ -47,12 +47,16 @@ class MainHandler(webapp2.RequestHandler):
         artist_query = Artist.query()
         artists = artist_query.fetch()
 
+# TODO(Kayla) current error we're running into is when new user first logs in, name does not display!!!
 
+        profile=""
         #creating login and logout
         # Should we fetch () the artist info from the query
         current_user = users.get_current_user()
         login_url = users.create_login_url('/')
         logout_url = users.create_logout_url('/')
+        if current_user:
+            profile = Profile.query().filter(Profile.email == current_user.email()).get()
 
          # Force the user to log in if they haven't already.
         if not current_user:
@@ -63,6 +67,7 @@ class MainHandler(webapp2.RequestHandler):
         "login_url": login_url,
         "logout_url": logout_url,
         'artists': artists,
+        'profile':profile,
 
         }
 
@@ -87,6 +92,7 @@ class ArtistHandler(webapp2.RequestHandler):
         current_user = users.get_current_user()
         profile = Profile.query().filter(Profile.email == current_user.email()).get()
         likes_python = Likes.query().filter(ndb.AND(Likes.artist_key == artist_key, Likes.profile_key == profile.key)).get()
+        logout_url = users.create_logout_url('/')
 
         if likes_python == None:
             like_state = 'neither'
@@ -98,7 +104,8 @@ class ArtistHandler(webapp2.RequestHandler):
             # TODO: Get the actual current like_state,
             # or "neither" if there is no Likes object in the database
             # for this user and artist.
-            'like_state': like_state # MADE CHANGE *****
+            'like_state': like_state, # MADE CHANGE *****
+            'logout_url':logout_url
         }
 
         template = jinja_environment.get_template('templates/artist_page.html')
@@ -144,14 +151,7 @@ class ProfileHandler(webapp2.RequestHandler):
 class MyProfileHandler(webapp2.RequestHandler):
     def get(self):
         current_user = users.get_current_user()
-
-    #    urlsafe_key2 = self.request.get('key')
-    #    artist_key = ndb.Key(urlsafe=urlsafe_key2)
-    #    artist = artist_key.get()
-
-        #   likes_python = Likes.query().filter(ndb.AND(Likes.artist_key == artist_key, Likes.profile_key == profile.key)).get()
-
-
+        logout_url = users.create_logout_url('/')
         profile = Profile.query().filter(Profile.email == current_user.email()).get()
         preferences = Likes.query().fetch()
         likes = Likes.query().filter(Likes.profile_key == profile.key )
@@ -164,6 +164,7 @@ class MyProfileHandler(webapp2.RequestHandler):
             'preferences':preferences,
             'likes':likes,
             'dislikes':dislikes,
+            'logout_url':logout_url,
         }
 
         template = jinja_environment.get_template('templates/myprofile.html')
@@ -234,6 +235,17 @@ class LikeHandler(webapp2.RequestHandler):
 
         # TODO(Thomas): Write back the new like state.
             self.response.write(new_like_state)
+class AboutUsHandler(webapp2.RequestHandler):
+    def get(self):
+        logout_url = users.create_logout_url('/')
+
+        template_vars = {
+            'logout_url':logout_url
+
+        }
+
+        template = jinja_environment.get_template('templates/aboutus.html')
+        self.response.write(template.render(template_vars))
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
@@ -241,5 +253,6 @@ app = webapp2.WSGIApplication([
     ('/profile', ProfileHandler),
     ('/myprofile', MyProfileHandler),
     ('/photo', PhotoHandler),
-    ('/like', LikeHandler)
+    ('/like', LikeHandler),
+    ('/aboutus', AboutUsHandler)
 ], debug=True)

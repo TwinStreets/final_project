@@ -2,44 +2,52 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Lobster+Two|Raleway:500" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="stylesheets/style.css" rel="stylesheet">
-    <title>My Profile</title>
-  </head>
-  <header>
-    <div>
-    <h1> {{profile.name}}</h1>
-  </div>
+    <title> {{profile.name}} </title>
+</head>
+<header>
+    <div class="topnav" id="myTopnav">
+       <a href="/myprofile">My Profile</a>
+       <a href="/">Home</a>
+       <a href="/aboutus">About Us</a>
+       <a id="getout" href="{{logout_url}}"> Log Out </a>
+     </div>
+
+     <div>
+       <h1>{{profile.name}}</h1>
+     </div>
+
   </header>
   <body>
 
-<input type="button" onclick="location.href='/';" value="Back to Home" /> <br>
+<h2> About Me: {{profile.blurb}}</h2>
+<h4> Email: {{profile.email}}</h4>
 
-<h2> Email: {{profile.email}}</h2>
-<h2> Blurb: {{profile.blurb}}</h2>
+<ul class="flex-container">
 
-
-
-
-    <h3>List of Likes</h3>
+<li class="flex-item">
+    <h3>Likes <i class="material-icons">thumb_up</i> </h3>
 
     {% for l in likes %}
 
     <img src="{{l.artist_key.get().image}}" style="width:250px;height:250px;"></img><br>
-    <a href="/artist?key={{l.artist_key.get().key.urlsafe() }}">{{l.artist_key.get().name}}</a> <br>
-     <br>
-    <!-- {{l}} -->
-    {% endfor %}
+    <a href="/artist?key={{l.artist_key.get().key.urlsafe() }}">{{l.artist_key.get().name}}</a><br><br><br>
 
-    <h3>List of Dislikes</h3>
+   </div>
+    {% endfor %}
+<li class="flex-item">
+    <h3>Dislikes <i class="material-icons">thumb_down</i> </h3>
 
     {% for d in dislikes %}
     <img src="{{d.artist_key.get().image}}" style="width:250px;height:250px;"></img><br>
     <a href="/artist?key={{d.artist_key.get().key.urlsafe() }}">{{d.artist_key.get().name}}</a> <br>
-   <br>
-    <!-- {{d}} -->
+   <br><br>
+  </div>
     {% endfor %}
 
+</ul>
 
-<input type="button" onclick="location.href='/';" value="Back to Home" /> <br>
   </body>
 </html>
