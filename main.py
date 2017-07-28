@@ -22,6 +22,7 @@ class Artist(ndb.Model):
     genre = ndb.StringProperty()
     image = ndb.StringProperty()
     bio = ndb.StringProperty()
+    song = ndb.StringProperty()
 
 # This is the mddle man between the user and the artist it allows them to talk to
 #  each other without being stuck to one in particular
@@ -35,7 +36,7 @@ class Likes(ndb.Model):
 class MainHandler(webapp2.RequestHandler):
     def get(self):
 
-        artist = [ Artist(name='Drake',genre='hip hop',image='https://i.scdn.co/image/cb080366dc8af1fe4dc90c4b9959794794884c66', bio='The best rapper alive'), Artist(name='John Mayer', genre='neo mellow', image='https://i.scdn.co/image/96a2e527431f7bf39cea4bf8702fc8159f08e2aa', bio='Who is this?'), Artist(name='Logic',genre='rap',image='https://i.scdn.co/image/9aab47129b8405aa80afc5590ed295b7899154f1', bio='The thing') ]
+        artist = [ Artist(name='Drake',genre='hip hop',image='https://i.scdn.co/image/cb080366dc8af1fe4dc90c4b9959794794884c66', bio='The best rapper alive', song="https://www.youtube.com/embed/uxpDa-c-4Mc"), Artist(name='John Mayer', genre='neo mellow', image='https://i.scdn.co/image/96a2e527431f7bf39cea4bf8702fc8159f08e2aa', bio='Who is this?', song="https://www.youtube.com/embed7VBex8zbDRs"), Artist(name='Logic',genre='rap',image='https://i.scdn.co/image/9aab47129b8405aa80afc5590ed295b7899154f1', bio='The thing', song='https://www.youtube.com/embed/yYhTJU4hHkI') ]
 
         artist_query = Artist.query().fetch()
 
@@ -154,7 +155,7 @@ class MyProfileHandler(webapp2.RequestHandler):
         profile = Profile.query().filter(Profile.email == current_user.email()).get()
         preferences = Likes.query().fetch()
         likes = Likes.query().filter(Likes.profile_key == profile.key )
-        likes = likes.filter(Likes.like_state == 'liked') 
+        likes = likes.filter(Likes.like_state == 'liked')
         dislikes = Likes.query().filter(Likes.profile_key == profile.key)
         dislikes = dislikes.filter(Likes.like_state == 'disliked' )
 
