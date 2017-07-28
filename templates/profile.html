@@ -2,21 +2,22 @@
 <html>
   <head>
     <title> {{current_user}}</title>
+    <link href="https://fonts.googleapis.com/css?family=Lobster+Two|Raleway:500" rel="stylesheet">
     <link href="stylesheets/style.css" rel="stylesheet">
   </head>
 
   <header>
     <div>
-    <h1>Profile<h1>
+    <h1>Create Profile<h1>
     </div>
   </header>
   <body>
     <!-- <h3>Name: {{current_user}}</h3> -->
     <form action="/profile" method="post">
-      <h4>Name: </h4>
-      <input value="{{current_user}}" type="text" name="name" >
+      <h3>Name: </h3>
+      <input type="text" name="name" placeholder="Call me..." >
       <h3>Bio: </h3>
-      <textarea  placeholder="Write about yourself! " name="blurb" rows="8" cols="80"></textarea><br>
+      <textarea  placeholder="Say a little bit about yourself! " name="blurb" rows="8" cols="80"></textarea><br><br>
       <input type="submit" >
     </form>
   <!-- <input type="button" onclick="location.href='/';" value="Back to Home" /> <br><br>  -->

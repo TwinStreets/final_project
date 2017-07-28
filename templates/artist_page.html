@@ -2,28 +2,29 @@
 <html>
   <head>
     <title>Artist name</title>
+    <link href="https://fonts.googleapis.com/css?family=Lobster+Two|Raleway:500" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="stylesheets/style.css" rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/icon?family=Material+Icons"
-        rel="stylesheet">
   </head>
 
   <header>
-  <input type="button" onclick="location.href='/';" value="Back to Home" /> <br><br>
+    <div class="topnav" id="myTopnav">
+       <a href="/myprofile">My Profile</a>
+       <a href="/">Home</a>
+       <a href="/aboutus">About Us</a>
+       <a id="getout" href="{{logout_url}}"> Log Out </a>
+     </div><br>
   <div>
     <h1>{{artist.name}}</h1>
   </div>
 </header>
-
-  <input type="button" onclick="location.href='/';" value="Back to Home" />    <input type="button" onclick="location.href='/myprofile';" value=" My Profile" /><br><br>
-
   <body>
 
             <template id="dataContainer" data-like-state='{{like_state}}'></template>
 
-            <h4> Name: {{artist.name}} <br>
+            <h4>
+            <img src="{{artist.image}}" alt="image of {{artist.name}}" style="width:250px;height:250px;"></img><br>
             Genre: {{artist.genre}} <br>
-            Image: <img src="{{artist.image}}" alt="image of {{artist.name}}" style="width:250px;height:250px;"></img><br>
             Bio: {{artist.bio}}  <br><br>
 
               <!-- TODO: Attach a click handler to each of these buttons -->

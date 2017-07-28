@@ -1,28 +1,45 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title> Kinding Home</title>
+    <title> Kindling </title>
   </head>
   <!-- <input type="button" onclick="location.href='/';" value="Log Out" /> -->
+  <link href="https://fonts.googleapis.com/css?family=Lobster+Two|Raleway:500" rel="stylesheet">
   <link href="stylesheets/style.css" rel="stylesheet">
 
   {% if current_user %}
+
+
+
+<body>
+
   <header>
-    <input id="whoami"type="button" onclick="location.href='/myprofile';" value=" My Profile" />
-    <a id="getout" href="{{logout_url}}"> Log Out </a><br>
+
+    <div class="topnav" id="myTopnav">
+       <a href="/myprofile">My Profile</a>
+       <a href="/">Home</a>
+       <a href="/aboutus">About Us</a>
+       <a id="getout" href="{{logout_url}}"> Log Out </a>
+     </div>
+
+
     <div>
-      <h1>HomePage</h1>
+      <h1>Kindling 🎵</h1>
     </div>
   </header>
-<body>
-  Welcome, {{current_user}}!<br><br>
+<br>
+  Welcome, {{profile.name}}!<br><br>
   <h3>Check out these artists!</h3><br>
 
+
+
   {% for artist in artists %}
-        <section style="width:160px;height190px;">
+
+        <section class="container"style="width:160px;height190px;">
           Name: <a href="/artist?key={{artist.key.urlsafe() }}">{{artist.name}}</a>
-          <img src="{{artist.image}}" alt="image of {{artist.name}}" style="width:160px;height:160px;"></img>
+       <img src="{{artist.image}}" alt="image of {{artist.name}}" style="width:160px;height:160px;"></img> </li>
         </section>
+
 
 
         {% endfor %}
@@ -42,7 +59,7 @@ Image: <img src="{{artist.image}}" alt="image of {{artist.name}}"></img>
   {% else %}
 <header>
   <div>
-   <h1>Kindling</h1>
+   <h1>Kindling 🎵</h1>
  </div>
  </header>
  <div>
@@ -51,15 +68,15 @@ Image: <img src="{{artist.image}}" alt="image of {{artist.name}}"></img>
 <br>
 
 <div>
-<img src = "images/fire.png" alt="image of fox"></img>
+<img src = "images/fire.png" alt="image of fox" style="height:200px"></img>
 </div>
+
  <div>
-  <a href="{{login_url}}"> Log In </a><br>
+  <a id="getin" type="button" href="{{login_url}}"> Log In </a>
 </div>
 
   {% endif %}
 </p>
 
-</body>
-
 </html>
+</body>

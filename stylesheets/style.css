@@ -3,23 +3,87 @@ footer {
   position: absolute;
 }
 
-body{
-  background: linear-gradient(yellow, red);
-  background-size: 100%;
+
+
+.topnav {
+    background-color: #333;
+    overflow: hidden;
 }
 
+/* Style the links inside the navigation bar */
+.topnav a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    text-shadow: none;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+
+.flex-container {
+ padding: 0;
+ margin: 0;
+ list-style: none;
+
+ display: -webkit-box;
+ display: -moz-box;
+ display: -ms-flexbox;
+ display: -webkit-flex;
+ display: flex;
+
+ -webkit-flex-flow: row wrap;
+ justify-content: space-around;
+}
+
+.flex-item {
+ padding: 5px;
+ width: 200px;
+ height: 150px;
+ margin-top: 10px;
+ text-align: center;
+}
+
+
+body{
+  background: linear-gradient(#fdc82a, rgba(255, 30, 30, 0.77), #fdc82a);
+  background-size: 100%;
+  font-family: 'Raleway', sans-serif;
+}
+
+
+
 header{
+  box-shadow: 5px 5px 20px #655555;
+  text-shadow: 3px 3px  black;
   position: relative;
-  background: brown;
-  padding: 15px;
+  color: white;
+  background: #982f2f;
+  font-size: 25px;
+  padding: 1px;
+  font-family: 'Lobster Two', cursive;
   font-weight: bold;
-  border-bottom: 1px solid blue;
-  border-top: 1px solid blue;
+
 }
 
 div{
   text-align: center;
 }
+
 
 body header a{
   text-align: right;
@@ -30,12 +94,36 @@ body header a{
   right: 0;
   padding: 15px;
 }
+
+#getin {
+      background-color: white;
+      color: black;
+      padding:10px;
+      border: 2px solid #e7e7e7;
+
+    }
+
+  #getin:hover {
+    background-color: #e7e7e7;
+  }
+
+h2, h4{
+  text-align: center;
+}
+
+
 section{
   background: tan;
   padding: 20px;
   box-shadow: 0 2px 4px gray;
   float: left;
-  margin-left: 50px;
+
+
+}
+
+.container{
+  flex-wrap: nowrap | wrap | wrap-reverse;
+  margin-right: 20px;
 }
 
 
