@@ -32,8 +32,13 @@
 
     {% for l in likes %}
 
-    <img src="{{l.artist_key.get().image}}" style="width:250px;height:250px;"></img><br>
-    <a href="/artist?key={{l.artist_key.get().key.urlsafe() }}">{{l.artist_key.get().name}}</a><br><br><br>
+    <a href="/artist?key={{l.artist_key.get().key.urlsafe() }}">
+    <section class="container"style="width:160px;height190px;">
+    <span class="artistname">{{l.artist_key.get().name}}</span>
+   <img src="{{l.artist_key.get().image}}" alt="image of {{l.artist_key.get().name}}" style="width:160px;height:160px;"></img>
+    </section>
+    </a>
+
 
    </div>
     {% endfor %}
@@ -41,10 +46,12 @@
     <h3>Dislikes <i class="material-icons">thumb_down</i> </h3>
 
     {% for d in dislikes %}
-    <img src="{{d.artist_key.get().image}}" style="width:250px;height:250px;"></img><br>
-    <a href="/artist?key={{d.artist_key.get().key.urlsafe() }}">{{d.artist_key.get().name}}</a> <br>
-   <br><br>
-  </div>
+    <a href="/artist?key={{d.artist_key.get().key.urlsafe() }}">
+    <section class="container"style="width:160px;height190px;">
+    <span class="artistname">{{d.artist_key.get().name}} </span>
+   <img src="{{d.artist_key.get().image}}" alt="image of {{d.artist_key.get().name}}" style="width:160px;height:160px;"></img>
+    </section>
+  </a>
     {% endfor %}
 
 </ul>

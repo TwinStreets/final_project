@@ -3,7 +3,11 @@ footer {
   position: absolute;
 }
 
+span{
+  color: black;
 
+
+}
 
 .topnav {
     background-color: #212120;
@@ -113,10 +117,11 @@ h2, h4{
 
 
 section{
-  background: rgba(210, 180, 140, 0.59);
+  background: rgba(202, 201, 200, 0.48);
   padding: 20px;
   box-shadow: 0 2px 4px gray;
   float: left;
+  text-align: center;
 }
 
 .container{
@@ -125,6 +130,10 @@ section{
   /* margin-bottom: 20px; */
   margin: 10px;
   border-radius: 10%;
+}
+
+.container:hover{
+  background-color: tan;
 }
 
 

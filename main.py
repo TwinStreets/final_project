@@ -36,7 +36,11 @@ class Likes(ndb.Model):
 class MainHandler(webapp2.RequestHandler):
     def get(self):
 
-        artist = [ Artist(name='Drake',genre='hip hop',image='https://i.scdn.co/image/cb080366dc8af1fe4dc90c4b9959794794884c66', bio='The best rapper alive', song="https://www.youtube.com/embed/uxpDa-c-4Mc"), Artist(name='John Mayer', genre='neo mellow', image='https://i.scdn.co/image/96a2e527431f7bf39cea4bf8702fc8159f08e2aa', bio='Who is this?', song="https://www.youtube.com/embed7VBex8zbDRs"), Artist(name='Logic',genre='rap',image='https://i.scdn.co/image/9aab47129b8405aa80afc5590ed295b7899154f1', bio='The thing', song='https://www.youtube.com/embed/yYhTJU4hHkI') ]
+        artist = [
+          Artist(name='Drake',genre='hip hop',image='https://i.scdn.co/image/cb080366dc8af1fe4dc90c4b9959794794884c66', bio='The best rapper alive', song="https://www.youtube.com/embed/uxpDa-c-4Mc"),
+          Artist(name='John Mayer', genre='neo mellow', image='https://i.scdn.co/image/96a2e527431f7bf39cea4bf8702fc8159f08e2aa', bio='Who is this?', song="https://www.youtube.com/embed/7VBex8zbDRs"),
+          Artist(name='Logic',genre='rap',image='https://i.scdn.co/image/9aab47129b8405aa80afc5590ed295b7899154f1', bio='The thing', song='https://www.youtube.com/embed/yYhTJU4hHkI')
+        ]
 
         artist_query = Artist.query().fetch()
 
