@@ -4,8 +4,8 @@ footer {
 }
 
 body{
-  background: tan;
-  padding: 15px;
+  background: linear-gradient(yellow, red);
+  background-size: 100%;
 }
 
 header{
@@ -31,7 +31,7 @@ body header a{
   padding: 15px;
 }
 section{
-  background: #cea789;
+  background: tan;
   padding: 20px;
   box-shadow: 0 2px 4px gray;
   float: left;
