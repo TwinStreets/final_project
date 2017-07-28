@@ -153,7 +153,7 @@ class MyProfileHandler(webapp2.RequestHandler):
         profile = Profile.query().filter(Profile.email == current_user.email()).get()
         preferences = Likes.query().fetch()
         likes = Likes.query().filter(Likes.profile_key == profile.key )
-        likes = likes.filter(Likes.like_state == 'liked') #and Likes.profile_key == current_user    ----- )
+        likes = likes.filter(Likes.like_state == 'liked') 
         dislikes = Likes.query().filter(Likes.profile_key == profile.key)
         dislikes = dislikes.filter(Likes.like_state == 'disliked' )
 
