@@ -3,14 +3,18 @@
   <head>
     <meta charset="utf-8">
     <link href="stylesheets/style.css" rel="stylesheet">
-    <title></title>
+    <title>My Profile</title>
   </head>
+  <header>
+    <div>
+    <h1> {{profile.name}}</h1>
+  </div>
+  </header>
   <body>
 
 <input type="button" onclick="location.href='/';" value="Back to Home" /> <br>
 
 <h2> Email: {{profile.email}}</h2>
-<h2> Name: {{profile.name}}</h2>
 <h2> Blurb: {{profile.blurb}}</h2>
 
 
