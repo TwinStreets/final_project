@@ -35,10 +35,17 @@
 
   {% for artist in artists %}
 
+      <a href="/artist?key={{artist.key.urlsafe() }}">
         <section class="container"style="width:160px;height190px;">
+<<<<<<< HEAD
           <a href="/artist?key={{artist.key.urlsafe() }}">{{artist.name}}</a>
        <img src="{{artist.image}}" alt="image of {{artist.name}}" style="width:160px;height:160px;"></img> </li>
+=======
+        <span class="artistname">  {{artist.name}} </span>
+       <img src="{{artist.image}}" alt="image of {{artist.name}}" style="width:160px;height:160px;"></img>
+>>>>>>> 6a341fd2cd407d8a641fd6337d5d3123cab9243e
         </section>
+        </a>
 
 
 

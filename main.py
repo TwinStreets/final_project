@@ -36,6 +36,7 @@ class Likes(ndb.Model):
 class MainHandler(webapp2.RequestHandler):
     def get(self):
 
+<<<<<<< HEAD
         artist = [ Artist(name='Drake',genre='hip hop',image='https://i.scdn.co/image/cb080366dc8af1fe4dc90c4b9959794794884c66', bio='The best rapper alive', song="https://www.youtube.com/embed/uxpDa-c-4Mc"),
                 Artist(name='John Mayer', genre='neo mellow', image='https://i.scdn.co/image/96a2e527431f7bf39cea4bf8702fc8159f08e2aa', bio='Who is this?', song="https://www.youtube.com/embed/7VBex8zbDRs"),
                 Artist(name='Logic',genre='rap',image='https://i.scdn.co/image/9aab47129b8405aa80afc5590ed295b7899154f1' , bio = 'An imaginative and stylistically dynamic rap artist who emerged during the early 2010s, Logic launched his career through uploads and independent mixtapes prior to reaching the mainstream with a Def Jam record deal.', song='https://www.youtube.com/embed/yYhTJU4hHkI'),
@@ -54,6 +55,10 @@ class MainHandler(webapp2.RequestHandler):
                 Artist(name='Black Pink', genre='parody', image='https://i.scdn.co/image/a112dc4f7848ef4afd25b40b447963f0e68d413f', bio='This is great', song="https://youtube.com/embed/N9qYF9DZPdw"),
                 Artist(name='Taylor Swift',genre='pop',image='https://i.scdn.co/image/04dfc3cd0be270a9a130c9889f154fb39e09fa13', bio='Taylor Swift is that rarest of pop phenomena: a superstar who managed to completely cross over from country to the mainstream.', song="https://www.youtube.com/embed/zIOVMHMNfJ4"),
                 Artist(name='Muse', genre='Alternative', image='https://i.scdn.co/image/19ac88c7aec1f68aa6e207aff29efa15d37336a7', bio='Where is he?', song="https://youtube.com/embed/Z9eMk051dYg")]
+=======
+        artist = [ Artist(name='Drake',genre='hip hop',image='https://i.scdn.co/image/cb080366dc8af1fe4dc90c4b9959794794884c66', bio='The best rapper alive', song="https://www.youtube.com/embed/uxpDa-c-4Mc"), Artist(name='John Mayer', genre='neo mellow', image='https://i.scdn.co/image/96a2e527431f7bf39cea4bf8702fc8159f08e2aa', bio='Who is this?', song="https://www.youtube.com/embed7VBex8zbDRs"), Artist(name='Logic',genre='rap',image='https://i.scdn.co/image/9aab47129b8405aa80afc5590ed295b7899154f1' , bio = 'The thing', song='https://www.youtube.com/embed/yYhTJU4hHkI'),
+        Artist(name='"Weird Al" Yankovic', genre='parody', image='https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/%22Weird_Al%22_Yankovic.JPG/210px-%22Weird_Al%22_Yankovic.JPG', bio='This is great', song="https://youtube.com/embed/N9qYF9DZPdw"), Artist(name='Chris Brown', genre='R&B', image='https://i.scdn.co/image/97169328b11f362571ae05b2dba51d585fe79615', bio='Where is he?', song="https://youtube.com/embed/Z9eMk051dYg")]
+>>>>>>> 6a341fd2cd407d8a641fd6337d5d3123cab9243e
 
         artist_query = Artist.query().fetch()
 
