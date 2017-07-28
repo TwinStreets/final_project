@@ -36,7 +36,7 @@
   {% for artist in artists %}
 
         <section class="container"style="width:160px;height190px;">
-          Name: <a href="/artist?key={{artist.key.urlsafe() }}">{{artist.name}}</a>
+          <a href="/artist?key={{artist.key.urlsafe() }}">{{artist.name}}</a>
        <img src="{{artist.image}}" alt="image of {{artist.name}}" style="width:160px;height:160px;"></img> </li>
         </section>
 
