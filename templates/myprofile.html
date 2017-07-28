@@ -28,7 +28,7 @@
 <ul class="flex-container">
 
 <li class="flex-item">
-    <h3>List of Likes <i class="material-icons">thumb_up</i> </h3>
+    <h3>Likes <i class="material-icons">thumb_up</i> </h3>
 
     {% for l in likes %}
 
@@ -38,7 +38,7 @@
    </div>
     {% endfor %}
 <li class="flex-item">
-    <h3>List of Dislikes <i class="material-icons">thumb_down</i> </h3>
+    <h3>Dislikes <i class="material-icons">thumb_down</i> </h3>
 
     {% for d in dislikes %}
     <img src="{{d.artist_key.get().image}}" style="width:250px;height:250px;"></img><br>
